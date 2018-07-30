@@ -27,8 +27,12 @@ get_instance_recommend = lambda i: i['recommendations'][0]['nodeType']
 get_instance_cost = lambda i: i["totalSpendAdjusted"]
 
 
+def get_email_tag(instance):
+    return cloudability.get_tag_value(instance, 'OwnerEmail')
+
+
 def owner_by_email(instance, dl_to_owner_saml):
-    email = cloudability.get_tag_value(instance, 'OwnerEmail')
+    email = get_email_tag(instance)
     if email in dl_to_owner_saml:
         account_name = dl_to_owner_saml[email]
         if account_name in Employee.by_account_name:
@@ -88,13 +92,19 @@ def assign_cost_and_waste(instances, owner_func):
     owner_func should either return an employee object or None if one cannot be found.
     '''
     emp_instances = {}
+    attributed_count = 0
+    failed_attributed_count = 0
 
     for instance in instances:
         emp = owner_func(instance)
         if not emp:
+            failed_attributed_count += 1
             continue
+        attributed_count += 1
         instance['owner'] = emp
         emp_instances.setdefault(emp, []).append(instance)
+    print("able to attribute instances:", attributed_count)
+    print("failed to attribute instances:", failed_attributed_count)
 
     for emp, instances in emp_instances.items():
         emp.cost = sum(get_instance_cost(i) for i in instances)
@@ -175,9 +185,12 @@ if __name__ == "__main__":
         cloudability.get_rightsizing_data(conf['cloudability_api_key'])['result'],
         match_ctype,
         match_rightsize))
+    print('count of rightsizing ctype instances:', + len(instances))
 
-    accounted_emails = set(filter(lambda x:x, map(lambda i: owner_by_email(i, {}), instances)))
-    dls = set(filter(lambda e: e.account_name.lower().startswith('dl-'), accounted_emails))
+    accounted_emails = set(filter(lambda x:x, map(lambda i: get_email_tag(i), instances)))
+    print('emails seen:', accounted_emails)
+    dls = set(filter(lambda s: s.lower().startswith('dl-'), accounted_emails))
+    print('dls', dls)
 
     dl_to_owner_saml = {}
     if os.path.isfile(DL_OWNER_CACHE_NAME):
@@ -186,6 +199,7 @@ if __name__ == "__main__":
             dl_to_owner_saml = pickle.load(f)
     else:
         for dl in dls:
+            print("retrieving dl", dl)
             owner = Employee.who_owns_dl(conf, dl)
             if not owner:
                 print("Unowned", dl)
@@ -198,6 +212,7 @@ if __name__ == "__main__":
     vp_list = config.get_vp_list(conf)
     vp_emps = list(map(lambda n: Employee.by_account_name[n], vp_list))
 
+    print('dl count:', len(list(dl_to_owner_saml.keys())))
     assign_cost_and_waste(instances, lambda i: owner_by_email(i, dl_to_owner_saml))
     aggregate_cost_and_waste(vp_emps)
 
