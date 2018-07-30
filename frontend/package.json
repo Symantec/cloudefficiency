@@ -1,0 +1,45 @@
+{
+  "name": "cloudefficiency-frontend",
+  "version": "0.0.1",
+  "description": "Frontend isomorphic React App for cloudefficiency",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon ./dist/test.js localhost 8080",
+    "watch": "NODE_ENV=development grunt",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/Symantec/cloudefficiency"
+  },
+  "keywords": [
+    "AWS",
+    "cloudefficiency",
+    "efficiency"
+  ],
+  "author": {
+    "name": "jack_phelan",
+    "email": "jack@bytesandwich.com"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-tabs": "^2.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "express": "^4.16.3",
+    "grunt": "^1.0.3",
+    "grunt-babel": "^7.0.0",
+    "grunt-browserify": "^5.3.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "load-grunt-tasks": "^4.0.0",
+    "nodemon": "^1.18.3",
+    "prop-types": "^15.6.2"
+  }
+}
