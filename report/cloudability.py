@@ -129,16 +129,16 @@ def get_rightsizing_data(cloudability_api_key, use_cache=True, page_size=DEFAULT
     print('succeeded requesting data from cloudability')
 
     print("got results, count:", len(result))
-    if use_cache:
-        with open(RIGHTSIZING_CACHE_NAME, 'r') as f:
-            print("saving result to ", RIGHTSIZING_CACHE_NAME)
-            entries = json.dump(result, f)
-            return entries
-
-    return {
+    data = {
         "result": result,
         "meta": meta
     }
+    if use_cache:
+        with open(RIGHTSIZING_CACHE_NAME, 'x') as f:
+            print("saving result to ", RIGHTSIZING_CACHE_NAME)
+            json.dump(data, f)
+
+    return data
 
 
 def get_tag_value(instance, want_tag, tag_prefix='tag_user_'):
