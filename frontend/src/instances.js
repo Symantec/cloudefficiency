@@ -7,13 +7,13 @@ let vps = {}
 
 VPLIST.forEach((s) => vps[s] = true);
 
-const Instance = ({instance}) => {
+const Instance = ({instance, timePeriod}) => {
   let potentialVPs = instance.owners.filter((s) => s in vps);
   let vp = "None";
   let vp_el = (<span>{formatName(vp)}</span>);
   if (potentialVPs.length > 0) {
     vp = potentialVPs[0];
-    let url = `/now/allocation/${vp}`;
+    let url = `/${timePeriod}/allocation/${vp}`;
     vp_el = <a href={url}>{formatName(vp)}</a>
   }
   return (
@@ -28,6 +28,7 @@ const Instance = ({instance}) => {
   )
 };
 Instance.propTypes = {
+  timePeriod: PropTypes.string.isRequired,
   instance: PropTypes.shape({
     name: PropTypes.string.isRequired,
     cost: PropTypes.number.isRequired,
@@ -37,7 +38,7 @@ Instance.propTypes = {
     waste: PropTypes.number.isRequired
   }).isRequired
 };
-const Instances = ({instances}) => {
+const Instances = ({instances, timePeriod}) => {
   const handleClick = () => {
     alert('instances');
   }
@@ -55,13 +56,14 @@ const Instances = ({instances}) => {
           </tr>
         </thead>
         <tbody>
-          {instances.map((i) => <Instance key={i.name} instance={i} />)}
+          {instances.map((i) => <Instance key={i.name} instance={i} timePeriod={timePeriod} />)}
         </tbody>
       </table>
     </div>
   );
 }
 Instances.propTypes = {
+  timePeriod: PropTypes.string.isRequired,
   instances: PropTypes.array.isRequired
 };
 

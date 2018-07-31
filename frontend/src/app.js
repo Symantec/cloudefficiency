@@ -21,8 +21,7 @@ const BottomBar = () => (
     <span><i className="far fa-copyright"></i> 2018 CPE | Jack Phelan</span>
   </footer>
 );
-const User = ({user}) => {
-  let timePeriod = 'now';
+const User = ({user, timePeriod}) => {
   let url = `/${timePeriod}/allocation/${user.user_saml_name}`;
   return (
     <React.Fragment>
@@ -32,7 +31,7 @@ const User = ({user}) => {
   );
 }
 
-const UserSelect = ({targetUser, users}) => {
+const UserSelect = ({targetUser, users, timePeriod}) => {
   let userSection;
   let totalWaste;
   if (targetUser) {
@@ -55,7 +54,7 @@ const UserSelect = ({targetUser, users}) => {
           <span>Team Member</span>
           <span>Potential Savings</span>
           <div className="bar"></div>
-          {users.sort((a,b) => b.org_waste - a.org_waste).map((user) => <User user={user} key={user.user_saml_name} />)}
+          {users.sort((a,b) => b.org_waste - a.org_waste).map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
           <div className="bar"></div>
           <span>Total:</span>
           <span className="money">{formatMoney(totalWaste)}</span>
@@ -91,8 +90,8 @@ const App = ({selectedUser, allUsers, allInstances, timePeriod}) => {
   return (
     <React.Fragment>
       <TopBar />
-      <UserSelect targetUser={targetUser} users={users}/>
-      <Instances instances={allInstances.filter(i => isOwnedBy(i, ownerNames))} />
+      <UserSelect targetUser={targetUser} users={users} timePeriod={timePeriod} />
+      <Instances instances={allInstances.filter(i => isOwnedBy(i, ownerNames))} timePeriod={timePeriod} />
       <BottomBar />
     </React.Fragment>
   );

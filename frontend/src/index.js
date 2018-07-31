@@ -8,6 +8,10 @@ window.hydrate = hydrate
 if (window.location.pathname.search('allocation/') > -1) {
   window.userName = window.location.pathname.split('allocation/')[1];
 }
+window.timePeriod = 'now';
+if (window.location.pathname.split('/').length > 1) {
+  window.timePeriod = window.location.pathname.split('/')[1];
+}
 window.allUsers = allUsers;
 window.allUsersDict = {};
 window.allUsers.forEach((u) => {
