@@ -34,11 +34,13 @@
     "babelify": "^8.0.0",
     "browserify": "^16.2.2",
     "express": "^4.16.3",
+    "graceful-fs": "^4.1.11",
     "grunt": "^1.0.3",
     "grunt-babel": "^7.0.0",
     "grunt-browserify": "^5.3.0",
     "grunt-contrib-watch": "^1.1.0",
     "load-grunt-tasks": "^4.0.0",
+    "mkdirp": "^0.5.1",
     "nodemon": "^1.18.3",
     "prop-types": "^15.6.2",
     "source-map-support": "^0.5.6"

@@ -28,7 +28,7 @@ body {
   grid-area: header;
   background: #221D43;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.50);
-  font-family:Futura-Medium;
+  font-family: Futura;
   font-size:30px;
   color:#fbba43;
   text-shadow:0 0 1px #fbba43;
@@ -50,7 +50,9 @@ body {
 #top_bar a {
   color: inherit;
   text-decoration: none;
+  white-space: pre;
   margin-right: 5%;
+  margin-left: 6px;
 }
 #top_bar a i {
   margin-left: 8px;
@@ -66,7 +68,7 @@ body {
   grid-area: footer;
   background: #221D43;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.50);
-  font-family:Futura-Medium;
+  font-family: Futura;
   font-size:20px;
   color:#fbba43;
   text-shadow:0 0 1px #fbba43;
@@ -108,7 +110,8 @@ body {
 }
 
 .user_section > span {
-    padding: 2px 4px;
+  padding: 2px 4px;
+  white-space:pre;
 }
 .user_section > .zebra:nth-child(4n+2),
 .user_section > .zebra:nth-child(4n+1) {
@@ -117,10 +120,10 @@ body {
 
 #user_select .user_section a {
   color: #213d61;
-  font-family:ArialHebrew;
+  font-family: Calibri;
   border-bottom: 1px solid;
   text-decoration: none;
-  line-height: 12px;
+  line-height: 16px;
   display: inline-block;
   margin-top: auto;
 }
@@ -129,7 +132,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 6px;
-  flex-grow: 1;
   overflow: auto;
 }
 
@@ -169,7 +171,7 @@ body {
 }
 
 .money {
-  font-family:ArialHebrew;
+  font-family: Calibri;
 }
 .money::before {
     content:"$";
@@ -203,6 +205,7 @@ body {
 
 td, th {
   padding: 6px;
+  white-space: pre;
 }
 thead, tfoot {
   background-color: rgb(216, 216, 216);

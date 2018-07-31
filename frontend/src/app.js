@@ -7,9 +7,9 @@ import VPLIST from './vpList';
 import { formatMoney, formatName } from './formats';
 
 
-const TopBar = () => (
+const TopBar = ({timePeriod}) => (
   <header id="top_bar">
-  <img src="/public/logo.svg" alt="CPE logo" />
+  <img src={"/"+timePeriod+"/public/logo.svg"} alt="CPE logo" />
   <span className="title">
     <span>Cloud Efficiency c-type Rightsizing: 10 Days</span>
   </span>
@@ -22,7 +22,7 @@ const BottomBar = () => (
   </footer>
 );
 const User = ({user, timePeriod}) => {
-  let url = `/${timePeriod}/allocation/${user.user_saml_name}`;
+  let url = `/${timePeriod}/allocation/${user.user_saml_name}.html`;
   return (
     <React.Fragment>
       <span className="a_wrapper zebra"><a href={url}>{formatName(user.user_saml_name)}</a></span>
@@ -41,6 +41,12 @@ const UserSelect = ({targetUser, users, timePeriod}) => {
     userSection = (<h2>Vice Presidents</h2>);
     totalWaste = users.map((u) => u.org_waste).reduce((a, b) => a + b, 0);
   }
+  let users_ordered = users.sort((a,b) => {
+    if (a.org_waste !== b.org_waste) {
+      return b.org_waste - a.org_waste;
+    }
+    return a.user_saml_name.localeCompare(b.user_saml_name);
+  });
   return (
     <div id="user_select">
       <div className="top_section">
@@ -54,7 +60,7 @@ const UserSelect = ({targetUser, users, timePeriod}) => {
           <span>Team Member</span>
           <span>Potential Savings</span>
           <div className="bar"></div>
-          {users.sort((a,b) => b.org_waste - a.org_waste).map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
+          {users_ordered.map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
           <div className="bar"></div>
           <span>Total:</span>
           <span className="money">{formatMoney(totalWaste)}</span>
@@ -84,12 +90,15 @@ const App = ({selectedUser, allUsers, allInstances, timePeriod}) => {
   }).filter((x) => x);
   let ownerNames = users.map((u) => u.user_saml_name)
   if (targetUser) {
-    ownerNames.push(targetUser);
+    ownerNames.push(targetUser.user_saml_name);
   }
-  const isOwnedBy = (i, ownerNames) => i.owners.filter(o => -1 !== ownerNames.indexOf(o)).length > 0;
+  const isOwnedBy = (i, ownerNames) => {
+    let intersection =  i.owners.filter(o => ownerNames.includes(o))
+    return intersection.length > 0;
+  }
   return (
     <React.Fragment>
-      <TopBar />
+      <TopBar timePeriod={timePeriod} />
       <UserSelect targetUser={targetUser} users={users} timePeriod={timePeriod} />
       <Instances instances={allInstances.filter(i => isOwnedBy(i, ownerNames))} timePeriod={timePeriod} />
       <BottomBar />

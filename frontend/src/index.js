@@ -6,7 +6,7 @@ import allInstances from './allInstances';
 
 window.hydrate = hydrate
 if (window.location.pathname.search('allocation/') > -1) {
-  window.userName = window.location.pathname.split('allocation/')[1];
+  window.userName = window.location.pathname.split('allocation/')[1].replace('.html', '');
 }
 window.timePeriod = 'now';
 if (window.location.pathname.split('/').length > 1) {

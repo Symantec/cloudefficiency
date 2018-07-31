@@ -16,7 +16,7 @@ allUsers.forEach((u) => {
 
 const server = express();
 
-server.use('/public', express.static('public'));
+server.use('/today/public', express.static('public'));
 
 server.get('/', allocation);
 server.get('/:timePeriod/allocation', allocation);
@@ -29,11 +29,15 @@ function allocation(req, res) {
     timePeriod = 'now';
   }
 
-  let userSamlName = req.params.userSamlName;
+  let userSamlName = req.params.userSamlName
+  if (userSamlName) {
+    userSamlName = userSamlName.replace('.html', '');
+  }
 
   res.send(renderToString(<HTMLTemplate
     body={<App selectedUser={userSamlName} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod}/>}
     title={'Hello World'}
+    timePeriod={timePeriod}
   />));
 };
 

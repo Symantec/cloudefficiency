@@ -1,4 +1,5 @@
 #!/usr/local/bin/python3
+import datetime
 import json
 import os.path
 import pickle
@@ -177,7 +178,7 @@ def _filter_instances(instances, *match_funcs):
 
 if __name__ == "__main__":
 
-    out_dir = './output'
+    out_dir = './output/{}/'.format(datetime.date.today().strftime('%-m_%-d_%Y'))
     conf = config.get()
     Employee.retrieve_records(conf)
 

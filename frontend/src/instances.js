@@ -13,7 +13,7 @@ const Instance = ({instance, timePeriod}) => {
   let vp_el = (<span>{formatName(vp)}</span>);
   if (potentialVPs.length > 0) {
     vp = potentialVPs[0];
-    let url = `/${timePeriod}/allocation/${vp}`;
+    let url = `/${timePeriod}/allocation/${vp}.html`;
     vp_el = <a href={url}>{formatName(vp)}</a>
   }
   return (
