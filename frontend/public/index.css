@@ -3,6 +3,12 @@ body {
   padding: 0;
   background: #ECEDEC;
 }
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative;
+}
 
 #root {
   display: grid;
