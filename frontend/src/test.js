@@ -6,6 +6,9 @@ import HTMLTemplate from './template';
 import allUsers from './allUsers';
 import allInstances from './allInstances';
 
+require('source-map-support').install();
+process.on('unhandledRejection', console.log);
+
 let allUsersDict = {};
 allUsers.forEach((u) => {
   allUsersDict[u.user_saml_name] = u;

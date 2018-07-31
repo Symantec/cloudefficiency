@@ -120,8 +120,10 @@ output/
 frontend/node_modules
 frontend/dist
 frontend/public/bundle.js
+frontend/public/logo.svg
 frontend/public/*.html
 frontend/output/
 frontend/src/allInstances.js
 frontend/src/allUsers.js
+frontend/src/vpList.js
 
