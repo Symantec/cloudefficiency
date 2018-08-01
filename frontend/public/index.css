@@ -95,11 +95,18 @@ body {
 #user_select .top_section
 {
   margin-bottom: 16px;
-  display: flex;
   justify-content: space-between;
   flex-grow: 1;
-  max-height: 20px;
+  max-height: 90px;
   padding-bottom: 10px;
+  position: relative;
+  flex-direction: column;
+}
+#user_select .top_section i
+{
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 #user_select .top_section .fill_space {
   flex: 1 0 10px;
@@ -206,6 +213,9 @@ body {
 #instances td.owner_td {
   display: flex;
   justify-content: space-evenly;
+}
+#instances td.owner_td i {
+  margin-left: 8px;
 }
 #instances td, #instances th {
   padding: 6px;

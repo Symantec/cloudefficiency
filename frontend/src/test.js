@@ -26,7 +26,7 @@ function allocation(req, res) {
 
   let timePeriod = req.params.timePeriod;
   if (!timePeriod) {
-    timePeriod = 'now';
+    timePeriod = 'today';
   }
 
   let userSamlName = req.params.userSamlName

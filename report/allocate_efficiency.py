@@ -61,6 +61,8 @@ def format_user_data(emp, time_period):
         "org_waste": emp.org_waste or 0,
     }
     data["reports"] = list(map(lambda r: r.account_name, emp.direct_reports))
+    if hasattr(emp, 'manager'):
+        data["manager"] = emp.manager.account_name
     return data
 
 
