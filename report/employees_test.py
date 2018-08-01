@@ -30,11 +30,11 @@ class TestEmployees(unittest.TestCase):
 
         for dl in dls:
             owner = Employee.who_owns_dl(conf, dl)
-            self.assertTrue(owner, "dl:{} has no owner".format(dl))
+            self.assertTrue(owner is not None, "dl:{} has no owner".format(dl))
             self.assertFalse(type(owner) == list)
         # TODO take from config
         result = Employee.who_owns_dl(conf, '<some dl>')
-        self.assertTrue(len(result) > 0)
+        self.assertTrue(result is not None)
 
 
 if __name__ == "__main__":

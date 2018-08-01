@@ -43,6 +43,7 @@
     "mkdirp": "^0.5.1",
     "nodemon": "^1.18.3",
     "prop-types": "^15.6.2",
+    "react-bootstrap": "^0.32.1",
     "source-map-support": "^0.5.6"
   }
 }

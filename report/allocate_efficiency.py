@@ -6,7 +6,7 @@ import pickle
 import re
 
 from . import config
-from .employees import Employee, EmployeeNotFound
+from .employees import Employee
 from . import cloudability
 
 DL_OWNER_CACHE_NAME = 'dl_owners.pickle'
@@ -32,14 +32,17 @@ def get_email_tag(instance):
     return cloudability.get_tag_value(instance, 'OwnerEmail')
 
 
-def owner_by_email(instance, dl_to_owner_saml):
+def owner_by_email(instance, dl_to_owner_saml_plus_reason):
     email = get_email_tag(instance)
-    if email in dl_to_owner_saml:
-        account_name = dl_to_owner_saml[email]
+    if email in dl_to_owner_saml_plus_reason:
+        owner_tuple = dl_to_owner_saml_plus_reason[email]
+        if owner_tuple is None:
+            return None
+        account_name, reason = owner_tuple
         if account_name in Employee.by_account_name:
-            return Employee.by_account_name[account_name]
+            return (Employee.by_account_name[account_name], reason + ":" + email)
     if email in Employee.by_email:
-        return Employee.by_email[email]
+        return (Employee.by_email[email], 'personal:' + email)
     return None
 
 
@@ -69,9 +72,11 @@ def format_instances_data(instances, time_period):
     def report_data(instance):
         owner = instance.get('owner')
         owners = []
+        why_owner = 'not attributed'
         while owner:
             owners.append(owner.account_name)
             owner = owner.manager
+            why_owner = instance['why_owner']
         if not owners:
             owners.append('unknown')
         return {
@@ -80,7 +85,8 @@ def format_instances_data(instances, time_period):
             "recommend": get_instance_recommend(instance),
             "cost": get_instance_cost(instance),
             "waste": get_instance_savings(instance),
-            "owners": owners
+            "owners": owners,
+            "why_owner": why_owner
         }
 
     return list(map(report_data, instances))
@@ -90,19 +96,21 @@ def assign_cost_and_waste(instances, owner_func):
     '''
     assign cost and waste attributes to individual employees for the given instances.
 
-    owner_func should either return an employee object or None if one cannot be found.
+    owner_func should either return an (employee object, attribution reason) tuple or None if one cannot be found.
     '''
     emp_instances = {}
     attributed_count = 0
     failed_attributed_count = 0
 
     for instance in instances:
-        emp = owner_func(instance)
-        if not emp:
+        tup = owner_func(instance)
+        if not tup:
             failed_attributed_count += 1
             continue
+        emp, reason = tup
         attributed_count += 1
         instance['owner'] = emp
+        instance['why_owner'] = reason
         emp_instances.setdefault(emp, []).append(instance)
     print("able to attribute instances:", attributed_count)
     print("failed to attribute instances:", failed_attributed_count)
@@ -130,6 +138,7 @@ def aggregate_cost_and_waste(employee_roots):
     for vp in employee_roots:
         traverse_waste(vp)
         traverse_cost(vp)
+
 
 def output_jsonp(json_data, jsonp_var, file_name, out_dir):
 
@@ -193,28 +202,29 @@ if __name__ == "__main__":
     dls = set(filter(lambda s: s.lower().startswith('dl-'), accounted_emails))
     print('dls', dls)
 
-    dl_to_owner_saml = {}
+    dl_to_owner_saml_plus_reason = {}
     if os.path.isfile(DL_OWNER_CACHE_NAME):
         print("getting dl owner entries from cache:", DL_OWNER_CACHE_NAME)
         with open(DL_OWNER_CACHE_NAME, 'rb') as f:
-            dl_to_owner_saml = pickle.load(f)
+            dl_to_owner_saml_plus_reason = pickle.load(f)
     else:
         for dl in dls:
             print("retrieving dl", dl)
-            owner = Employee.who_owns_dl(conf, dl)
-            if not owner:
+            dl_tuple = Employee.who_owns_dl(conf, dl)
+            if not dl_tuple:
                 print("Unowned", dl)
                 continue
-            dl_to_owner_saml[dl] = owner.account_name
+            owner, reason = dl_tuple
+            dl_to_owner_saml_plus_reason[dl] = (owner.account_name, reason)
         with open(DL_OWNER_CACHE_NAME, 'wb') as f:
             print("writing dl owner entries to cache:", DL_OWNER_CACHE_NAME)
-            pickle.dump(dl_to_owner_saml, f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(dl_to_owner_saml_plus_reason, f, pickle.HIGHEST_PROTOCOL)
 
     vp_list = config.get_vp_list(conf)
     vp_emps = list(map(lambda n: Employee.by_account_name[n], vp_list))
 
-    print('dl count:', len(list(dl_to_owner_saml.keys())))
-    assign_cost_and_waste(instances, lambda i: owner_by_email(i, dl_to_owner_saml))
+    print('dl count:', len(list(dl_to_owner_saml_plus_reason.keys())))
+    assign_cost_and_waste(instances, lambda i: owner_by_email(i, dl_to_owner_saml_plus_reason))
     aggregate_cost_and_waste(vp_emps)
 
     generate_pages(vp_emps, instances, 'time_now', out_dir)

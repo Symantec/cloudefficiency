@@ -203,18 +203,22 @@ body {
   border-collapse: collapse;
 }
 
-td, th {
+#instances td.owner_td {
+  display: flex;
+  justify-content: space-evenly;
+}
+#instances td, #instances th {
   padding: 6px;
   white-space: pre;
 }
-thead, tfoot {
+#instances thead, #instances tfoot {
   background-color: rgb(216, 216, 216);
 }
-thead th {
+#instances thead th {
   border: 1px solid rgb(151, 151, 151);
 }
 
-tbody tr:nth-child(odd) {
+#instances tbody tr:nth-child(odd) {
   background-color: rgb(222, 222, 222);
 }
 

@@ -200,13 +200,16 @@ class Employee:
 
     @classmethod
     def who_owns_dl(cls, conf, dl_name):
+        '''
+        Returns (owner, membership_level) tuple or None.
+        '''
         dl = _ldap_lookup_dl(conf, dl_name)
         if len(dl.managedbys) > 0:
-            return dl.managedbys[0]
+            return (dl.managedbys[0], 'manages')
         elif len(dl.secondaries) > 0:
-            return dl.secondaries[0]
+            return (dl.secondaries[0], 'secondarily manages')
         elif len(dl.members) > 0:
-            return dl.members[0]
+            return (dl.members[0], 'member')
         else:
             return None
 
