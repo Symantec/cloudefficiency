@@ -8,7 +8,7 @@ DEFAULT_PAGING_SIZE = 10000
 
 RIGHTSIZING_URL = ("https://api.cloudability.com"
 "/v3/rightsizing/aws/recommendations/ec2"
-"?viewId=0&limit={limit}&offset={offset}")
+"?viewId=0&limit={limit}&offset={offset}&sort=-resourceIdentifier&maxRecsPerResource=1")
 
 
 def _paged_request(limit, offset, cloudability_api_key):
