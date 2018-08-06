@@ -102,7 +102,7 @@ body {
   position: relative;
   flex-direction: column;
 }
-#user_select .top_section i
+#user_select .top_section i.fa-question-circle
 {
   position: absolute;
   top: 0;

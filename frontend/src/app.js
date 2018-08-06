@@ -56,6 +56,7 @@ const User = ({user, timePeriod}) => {
 const UserSelect = ({targetUser, manager, users, timePeriod}) => {
   let userSection;
   let totalWaste;
+  let totalInstanceCount;
   let manager_el
   if (manager) {
     let manager_url = `/${timePeriod}/allocation/${manager}.html`;
@@ -72,14 +73,16 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
       <React.Fragment>
         <h2>{formatName(targetUser.user_saml_name)}</h2>
         <div><span>Personal potential annual savings: </span></div>
-        <div><span>{formatMoneyAnnualIcon(targetUser.waste, targetUser.org_instance_count)}</span></div>
+        <div><span>{formatMoneyAnnualIcon(targetUser.waste, targetUser.instance_count)}</span></div>
         <div>{manager_el}</div>
       </React.Fragment>
     );
     totalWaste = targetUser.org_waste;
+    totalInstanceCount = targetUser.org_instance_count;
   } else {
     userSection = (<h2>Leadership Team</h2>);
     totalWaste = users.map((u) => u.org_waste).reduce((a, b) => a + b, 0);
+    totalInstanceCount = users.map((u) => u.org_instance_count).reduce((a, b) => a + b, 0);
   }
   let users_ordered = users.sort((a,b) => {
     if (a.org_waste !== b.org_waste) {
@@ -125,7 +128,7 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
           {users_ordered.map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
           <div className="bar"></div>
           <span>Team Total:</span>
-          <span>{formatMoneyAnnual(totalWaste)}</span>
+          <span>{formatMoneyAnnualIcon(totalWaste, totalInstanceCount)}</span>
         </div>
     }
     </div>
