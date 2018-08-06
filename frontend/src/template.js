@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const HTMLTemplate = ({ body, title, timePeriod }) => {
-  const hydrate_js = {__html: `hydrate(
+const HTMLTemplate = ({ body, title, timePeriod, env}) => {
+  const hydrate_js = {__html: `window.hydrate(
           React.createElement(App, {
             'selectedUser': window.userName,
             'allUsers': window.allUsersDict,
             'allInstances': window.allInstances,
-            'timePeriod': window.timePeriod
+            'timePeriod': window.timePeriod,
+            'env': '${env}',
+            'isClient': true
           }, null),
           document.getElementById('root')
         );` }
@@ -35,7 +37,8 @@ const HTMLTemplate = ({ body, title, timePeriod }) => {
 
 HTMLTemplate.propTypes = {
   title: PropTypes.string.isRequired,
-  body: PropTypes.element.isRequired
+  body: PropTypes.element.isRequired,
+  env: PropTypes.string.isRequired
 };
 
 export default HTMLTemplate;

@@ -35,8 +35,9 @@ function allocation(req, res) {
   }
 
   res.send(renderToString(<HTMLTemplate
-    body={<App selectedUser={userSamlName} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod}/>}
+    body={<App selectedUser={userSamlName} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod} env={'dev'}/>}
     title={'Hello World'}
+    env={'dev'}
     timePeriod={timePeriod}
   />));
 };

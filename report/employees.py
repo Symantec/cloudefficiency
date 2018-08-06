@@ -112,6 +112,7 @@ class Employee:
         self.manager = None
         self.cost = None
         self.waste = None
+        self.instance_count = None
         self.org_cost = None
         self.org_waste = None
         self.vp_cost = None

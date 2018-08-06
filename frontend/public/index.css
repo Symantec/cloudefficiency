@@ -97,7 +97,7 @@ body {
   margin-bottom: 16px;
   justify-content: space-between;
   flex-grow: 1;
-  max-height: 90px;
+  max-height: 110px;
   padding-bottom: 10px;
   position: relative;
   flex-direction: column;
@@ -185,6 +185,12 @@ body {
 }
 .money {
     color:red;
+}
+.money.good {
+    color:green;
+}
+.fa-smile {
+    color:green;
 }
 
 #user_select .bar {

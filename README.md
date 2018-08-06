@@ -32,4 +32,84 @@ cwd has `./output/*.html`
 `./public/bundle.js` has js and user/instance data
 
 
+## Analytics Events
 
+Root Render (document.referrer, page)
+{
+    name: 'appRender'
+});
+
+
+Analytics.updateEndpoint({
+    page: ...,
+	referrer: ...,
+})
+
+click CPE logo
+{
+    name: 'click',
+    attributes: {
+    	target: 'logo'
+    },
+});
+
+click issues
+{
+    name: 'click',
+    attributes: {
+    	target: 'issues'
+    },
+});
+
+click teammember
+{
+    name: 'click',
+    attributes: {
+    	target: 'teammember',
+    	targetUser: 'name'
+    },
+});
+
+click manager
+{
+    name: 'click',
+    attributes: {
+    	target: 'manager',
+    	targetUser: 'name'
+    },
+});
+
+click owner
+{
+    name: 'click',
+    attributes: {
+    	target: 'instanceOwner',
+    	targetUser: 'name',
+    	targetInstance: 'id'
+    },
+});
+
+click ownerVp
+{
+    name: 'click',
+    attributes: {
+    	target: 'pwmerVP',
+    	targetUser: 'name',
+    	targetInstance: 'id'
+    },
+});
+
+hover tooltip
+{
+    name: 'tooltip',
+    attributes: {
+    	target: 'leadership' | 'user' | 'id' | 'type' | 'suggest' | 'waste' | 'cost' | 'owner' | 'vpOwner' | 'attribution', 'moneyExplanation,
+    },
+});
+{
+    name: 'tooltip',
+    attributes: {
+    	target: 'attribution',
+    	targetUser: 'name'
+    },
+});

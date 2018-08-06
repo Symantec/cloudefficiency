@@ -20,8 +20,9 @@ let dir = './output/' + timePeriod + '/allocation/'
 let render = () => {
   allUsers.forEach((u) => {
     let fileBody = renderToString(<HTMLTemplate
-      body={<App selectedUser={u.user_saml_name} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod}/>}
+      body={<App selectedUser={u.user_saml_name} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod} env={'prod'}/>}
       title={u.user_saml_name + " EC2 c-type rightsizing report"}
+      env={'prod'}
       timePeriod={timePeriod}
     />);
     console.log(dir + u.user_saml_name + ".html");
@@ -34,8 +35,9 @@ let render = () => {
   })
 
   let fileBody = renderToString(<HTMLTemplate
-    body={<App allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod}/>}
+    body={<App allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod} env={'prod'}/>}
     title={"VP EC2 c-type rightsizing report"}
+    env={'prod'}
     timePeriod={timePeriod}
   />);
   console.log(dir + 'index.html');

@@ -57,6 +57,8 @@ def format_user_data(emp, time_period):
         "user_saml_name": emp.account_name,
         "cost": emp.cost or 0,
         "waste": emp.waste or 0,
+        "org_instance_count": emp.org_instance_count or 0,
+        "instance_count": emp.instance_count or 0,
         "org_cost": emp.org_cost or 0,
         "org_waste": emp.org_waste or 0,
     }
@@ -120,6 +122,7 @@ def assign_cost_and_waste(instances, owner_func):
     for emp, instances in emp_instances.items():
         emp.cost = sum(get_instance_cost(i) for i in instances)
         emp.waste = sum(get_instance_savings(i) for i in instances)
+        emp.instance_count = len(instances)
 
 
 def aggregate_cost_and_waste(employee_roots):
@@ -137,9 +140,17 @@ def aggregate_cost_and_waste(employee_roots):
         emp.org_cost = org_cost
         return org_cost
 
+    def traverse_instance_count(emp):
+        org_instance_count = emp.instance_count or 0
+        if emp.direct_reports:
+            org_instance_count += sum(traverse_instance_count(r) for r in emp.direct_reports)
+        emp.org_instance_count = org_instance_count
+        return org_instance_count
+
     for vp in employee_roots:
         traverse_waste(vp)
         traverse_cost(vp)
+        traverse_instance_count(vp)
 
 
 def output_jsonp(json_data, jsonp_var, file_name, out_dir):

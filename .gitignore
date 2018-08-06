@@ -127,3 +127,7 @@ frontend/src/allInstances.js
 frontend/src/allUsers.js
 frontend/src/vpList.js
 
+
+frontend/awsmobilejs/
+frontend/src/aws-config.js
+frontend/src/aws-exports.js
