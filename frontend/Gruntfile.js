@@ -3,15 +3,29 @@ module.exports = grunt => {
 
   grunt.initConfig({
     browserify: {
-      dist: {
-        options: {
+      options: {
           transform: [["babelify", {presets: ["env", "react"]}]],
-          // debug true means include source maps in bundle.js
-          browserifyOptions: { debug: true }
-        },
+          browserifyOptions : {
+            debug : true // source mapping
+          }
+      },
+      dev: {
         files: {
           "public/bundle.js": "src/index.js"
+        },
+        options : {
+          watch : true, // use watchify for incremental builds!
+          keepAlive : true, // watchify will exit unless task is kept alive
+          transform: [["babelify", {presets: ["env", "react"]}]],
+          browserifyOptions : {
+            debug : true // source mapping
+          }
         }
+      },
+      dist: {
+        files: {
+          "public/bundle.js": "src/index.js"
+        },
       }
     },
     babel: {
@@ -28,12 +42,18 @@ module.exports = grunt => {
         }]
       }
     },
+    concurrent: {
+      watchTarget: ['browserify:dev', 'watch'],
+      options: {
+        logConcurrentOutput: true
+      }
+    },
     watch: {
       files: ['src/*.js'],
-      tasks: ['babel', 'browserify']
+      tasks: ['newer:babel:dist']
     }
   });
 
-  grunt.registerTask("prod", ["browserify", "babel"]);
-  grunt.registerTask("default", ["watch"]);
+  grunt.registerTask("prod", ["browserify:dist", "babel"]);
+  grunt.registerTask("default", ["concurrent:watchTarget"]);
 }
