@@ -1,3 +1,5 @@
+// This file is the root for bundle.js
+
 import { hydrate } from 'react-dom';
 import React from 'react';
 import App from './app';
@@ -21,5 +23,4 @@ window.allUsers.forEach((u) => {
 window.allInstances = allInstances;
 window.App = App;
 window.React = React;
-window.timePeriod = 'now';
 
