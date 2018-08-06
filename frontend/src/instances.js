@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import VPLIST from './vpList';
 import { formatMoneyAnnual, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { Analytics } from 'aws-amplify';
+import Analytics from './analytics';
 
 let vps = {}
 

@@ -6,12 +6,10 @@ import VPLIST from './vpList';
 
 import { formatMoneyAnnual, formatMoneyAnnualIcon, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Analytics from './analytics';
 
-import Amplify from 'aws-amplify';
-import awsmobile from './aws-exports';
-import { Analytics } from 'aws-amplify';
 
-Amplify.configure(awsmobile);
+Analytics.setup();
 
 
 const TopBar = ({timePeriod}) => {
@@ -139,12 +137,12 @@ class App extends React.Component {
     if (this.props.isClient) {
       let env = this.props.env || 'dev';
       console.log('env:' + env);
-      Analytics.updateEndpoint({
+      Analytics.defaultInfo({
         userName: window.userName,
         timePeriod: window.timePeriod,
         env: env
       })
-      Analytics.record('AppMount');
+      Analytics.record({ name: 'AppMount'});
     }
   }
   render() {
