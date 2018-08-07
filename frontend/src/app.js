@@ -97,7 +97,7 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
         You are looking at Annualized potential savings based on the 10 day period ending at {timePeriod} for {formatName(targetUser.user_saml_name)}
         { users.length > 0 && ' and team.' }
         {' ' + formatName(targetUser.user_saml_name)}'s personal potential savings 
-        { users.length > 0 && ' plus their team\'s' } = ${formatMoneyAnnual(totalWaste)}.
+        { users.length > 0 && ' plus their team\'s' } = {formatMoneyAnnual(totalWaste)}.
       </Tooltip>
     );
   } else {
