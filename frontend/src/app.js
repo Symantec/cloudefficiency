@@ -122,7 +122,7 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
     { users.length > 0 && 
         <div className="user_section">
           <div className="bar"></div>
-          <span>{targetUser ? 'Direct Reports' : 'Team Member'}</span>
+          <span>{targetUser ? 'Direct Reports' : 'Team Members'}</span>
           <span>Potential Annual Savings</span>
           <div className="bar"></div>
           {users_ordered.map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
