@@ -1,3 +1,8 @@
+let timePeriod = (new Date()).toLocaleDateString().replace(/\//g, "_");
+
+todayPublicBundleFiles = {};
+todayPublicBundleFiles['./output/' + timePeriod + "/public/bundle.js"] = "src/index.js";
+
 module.exports = grunt => {
   require("load-grunt-tasks")(grunt);
 
@@ -23,9 +28,7 @@ module.exports = grunt => {
         }
       },
       dist: {
-        files: {
-          "public/bundle.js": "src/index.js"
-        },
+        files: todayPublicBundleFiles
       }
     },
     babel: {
@@ -54,6 +57,6 @@ module.exports = grunt => {
     }
   });
 
-  grunt.registerTask("prod", ["browserify:dist", "babel"]);
+  grunt.registerTask("prod", ["browserify:dist", "babel:dist"]);
   grunt.registerTask("default", ["concurrent:watchTarget"]);
 }
