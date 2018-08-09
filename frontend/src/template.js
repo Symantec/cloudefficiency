@@ -28,7 +28,7 @@ const HTMLTemplate = ({ body, title, timePeriod, env}) => {
       <body>
         <div id="root">{body}</div>
       </body>
-      <link rel="icon" href="http://***REMOVED***/favicon.png" type='image/x-icon'></link>
+      <link rel="icon" href="/favicon.png" type='image/x-icon'></link>
       <script src={"/"+timePeriod+"/public/bundle.js"}></script>
       <script dangerouslySetInnerHTML={hydrate_js}>
       </script>

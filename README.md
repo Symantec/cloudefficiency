@@ -1,3 +1,5 @@
+docker run -it -v `pwd`'/frontend/src/config.js:/app/frontend/src/config.js' -v `pwd`'/report/config.json:/app/report/config.json' -v "$HOME/.aws/:/root/.aws/" cloudefficiency
+
 # EC2 c-type instance cost/waste interactive reports by team and manager.
 Three stages to produce EC2 c-type instance cost/waste interactive reports.
 ldap data + instance data -> user hierarchy and instance data -> static html/js isomorphic React pages.

@@ -106,7 +106,7 @@ venv.bak/
 # osx
 .DS_Store
 
-# config
+# report config
 config.json
 
 # ldap, cloudability cache
@@ -116,16 +116,20 @@ rightsizing_cache.json
 
 # script output
 output/
+data/
+
+report/config.json
+report/__pycache__
 
 frontend/node_modules
 frontend/dist
 frontend/public/bundle.js
-frontend/public/logo.svg
 frontend/public/*.html
 frontend/output/
 frontend/src/allInstances.js
 frontend/src/allUsers.js
-frontend/src/vpList.js
 
 
 frontend/src/config.js
+
+

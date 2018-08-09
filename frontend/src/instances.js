@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import VPLIST from './vpList';
+import { VPLIST } from './config';
 import { formatMoneyAnnual, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Analytics from './analytics';

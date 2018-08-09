@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Instances from './instances';
-import VPLIST from './vpList';
+import { VPLIST } from './config';
 
 import { formatMoneyAnnual, formatMoneyAnnualIcon, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';

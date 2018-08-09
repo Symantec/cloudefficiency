@@ -45,6 +45,7 @@ let render = () => {
     if(err) {
       return console.log(err);
     }
+    process.exit(0);
   });
 };
 
