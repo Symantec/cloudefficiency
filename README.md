@@ -33,6 +33,44 @@ cwd has `./output/*.html`
 `./public/index.css` has styling
 `./public/bundle.js` has js and user/instance data
 
+# Configuration files
+`logo.svg` in `frontend/public/logo.svg`
+`config.js` in `frontend/src/config.js`
+```
+const awsmobile = {
+    'aws_app_analytics': 'enable',
+    'aws_mobile_analytics_app_id': <string>,
+    'aws_mobile_analytics_app_region': <string>,
+    'aws_project_id': <string>,
+    'aws_project_name': <string>,
+    'aws_project_region': <string>,
+    'aws_resource_name_prefix': <string>
+}
+const VPLIST = [<string>...]
+
+export { awsmobile, VPLIST };
+
+```
+`config.json` in `report/config.json`
+```
+{
+  "ldap_url": <string>,
+  "ldap_port": <number>,
+  "ldap_basedn": <string>,
+  "ldap_binddn": <string>,
+  "ldap_bindpw": <string>,
+  "ldab_dl_basedn": <string>,
+  "ldap_dl_search_filter_template": <string>,
+  "ldap_search_filter": <string>,
+  "ldap_searchreq_attrlist": [<string>...],
+  "ldap_users_cache_file": <filename>,
+  "ldap_cache_time": <number>,
+  "cloudability_api_key": <string>,
+  "VP_LIST": [<string>...]
+}
+
+```
+
 
 ## Analytics Events
 
