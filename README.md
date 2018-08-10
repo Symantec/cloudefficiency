@@ -1,4 +1,7 @@
 1. install minikube
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+
+2. To run:
 ```
 eval $(minikube docker-env)
 docker build -t cloudefficiency .
