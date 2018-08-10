@@ -1,0 +1,48 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cloudefficiency-cronjob
+spec:
+  concurrencyPolicy: "Forbid"
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 2400
+      completions: 1
+      template:
+        metadata:
+          name: cloudefficiency-pod
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: cloudefficiency
+            imagePullPolicy: Never
+            image: cloudefficiency
+            command: ["bash"]
+            args: ["upload.sh"]
+            workingDir: /app
+            env:
+            - name: BUCKET
+              value: "$BUCKET"
+            - name: AWS_PROFILE
+              value: "$AWS_PROFILE"
+            volumeMounts:
+            - name: config
+              mountPath: "/app/report/config.json"
+              subPath: "config.json"
+              readOnly: true
+            - name: config
+              mountPath: "/app/frontend/src/config.js"
+              subPath: "config.js"
+              readOnly: true
+            - name: aws-credentials
+              mountPath: "/root/.aws/"
+              readOnly: true
+          volumes:
+          - name: config
+            secret:
+              secretName: cloudefficiency-config
+          - name: aws-credentials
+            secret:
+              secretName: cloudefficiency-aws-credentials

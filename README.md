@@ -1,4 +1,14 @@
-docker run -it -v `pwd`'/frontend/src/config.js:/app/frontend/src/config.js' -v `pwd`'/report/config.json:/app/report/config.json' -v "$HOME/.aws/:/root/.aws/" cloudefficiency
+1. install minikube
+```
+eval $(minikube docker-env)
+docker build -t cloudefficiency .
+kubectl create secret generic cloudefficiency-config --from-file=./report/config.json --from-file=./frontend/src/config.js
+kubectl create secret generic cloudefficiency-aws-credentials --from-file=~/.aws
+export BUCKET=mybucket
+export AWS_PROFILE=myprofile
+envsubst < job.yaml | kubectl create -f -
+kubectl create job --from=cronjob/cloudefficiency-cronjob cloudefficiency-job
+```
 
 # EC2 c-type instance cost/waste interactive reports by team and manager.
 Three stages to produce EC2 c-type instance cost/waste interactive reports.
