@@ -20,6 +20,8 @@ node dist/generate_files.js
 aws s3 sync ./output/$DATE/ s3://$BUCKET/$DATE/
 
 # update index redirect
-envsubst < s3_redirect.json > website.json.new
-aws s3api put-bucket-website --bucket $BUCKET --website-configuration file://website.json.new
+envsubst < s3_redirect.template.json > website.json
+envsubst < redirect_index.template.html > redirect_index.html
+aws s3api put-bucket-website --bucket $BUCKET --website-configuration file://website.json
+aws s3 cp redirect_index.html s3://$BUCKET/redirect_index.html
 

@@ -1,6 +1,6 @@
 {
     "IndexDocument": {
-        "Suffix": "index.html"
+        "Suffix": "redirect_index.html"
     },
     "RoutingRules": [
         {
