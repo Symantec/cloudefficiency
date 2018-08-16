@@ -204,6 +204,8 @@ class Employee:
         '''
         Returns (owner, membership_level) tuple or None.
         '''
+        if dl_name.find(';') != -1:
+            dl_name = dl_name.split(';')[0].strip()
         dl = _ldap_lookup_dl(conf, dl_name)
         if len(dl.managedbys) > 0:
             return (dl.managedbys[0], 'manages')

@@ -17,16 +17,13 @@ spec:
           restartPolicy: Never
           containers:
           - name: cloudefficiency
-            imagePullPolicy: Never
-            image: cloudefficiency
-            command: ["bash"]
-            args: ["upload.sh"]
+            image: $IMAGE
+            command: ["/usr/bin/time"]
+            args: ["-v", "./upload.sh"]
             workingDir: /app
             env:
             - name: BUCKET
               value: "$BUCKET"
-            - name: AWS_PROFILE
-              value: "$AWS_PROFILE"
             volumeMounts:
             - name: config
               mountPath: "/app/report/config.json"

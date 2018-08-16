@@ -1,10 +1,14 @@
 # sudo pip install awscli
+set -e
+set -x
 
 export DATE=`date '+%-m_%-d_%Y'`
 echo "Generating files for $DATE"
 
 # create output/<date>/{allUsers.js|allInstances.js}
 python3 -m report.allocate_efficiency
+
+ls
 
 mv output/$DATE/all* frontend/src/
 cd frontend

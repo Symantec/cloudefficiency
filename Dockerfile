@@ -4,7 +4,8 @@ RUN apt-get update && apt-get install -y \
   nodejs \
   npm \
   python3 \
-  python3-pip
+  python3-pip \
+  time
 
 RUN mkdir /app
 COPY ./report/requirements.txt /app/report/requirements.txt

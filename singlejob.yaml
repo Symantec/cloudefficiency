@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cloudefficiency-job
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 2400
+  completions: 1
+  template:
+    metadata:
+      name: cloudefficiency-pod
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: cloudefficiency
+        imagePullPolicy: Never
+        image: $IMAGE
+        command: ["/usr/bin/time"]
+        args: ["-v", "./upload.sh"]
+        workingDir: /app
+        env:
+        - name: BUCKET
+          value: "$BUCKET"
+        volumeMounts:
+        - name: config
+          mountPath: "/app/report/config.json"
+          subPath: "config.json"
+          readOnly: true
+        - name: config
+          mountPath: "/app/frontend/src/config.js"
+          subPath: "config.js"
+          readOnly: true
+        - name: aws-credentials
+          mountPath: "/root/.aws/"
+          readOnly: true
+        resources:
+          limits:
+            memory: 2G
+          requests:
+            memory: 2G
+      volumes:
+      - name: config
+        secret:
+          secretName: cloudefficiency-config
+      - name: aws-credentials
+        secret:
+          secretName: cloudefficiency-aws-credentials
