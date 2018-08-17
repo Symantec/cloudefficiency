@@ -1,3 +1,8 @@
+
+# Cloud Efficiency Report
+![Screenshot](https://github.com/Symantec/cloudefficiency/raw/master/cloudefficiency.png)
+
+# To run the report
 1. install minikube
 https://kubernetes.io/docs/tasks/tools/install-minikube/
 
@@ -9,7 +14,7 @@ kubectl create secret generic cloudefficiency-config --from-file=./report/config
 kubectl create secret generic cloudefficiency-aws-credentials --from-file=~/.aws
 export BUCKET=mybucket
 export AWS_PROFILE=myprofile
-envsubst < job.yaml | kubectl create -f -
+envsubst < cronjob.yaml | kubectl create -f -
 kubectl create job --from=cronjob/cloudefficiency-cronjob cloudefficiency-job
 ```
 
