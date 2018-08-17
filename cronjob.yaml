@@ -1,10 +1,10 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v2alpha1
 kind: CronJob
 metadata:
   name: cloudefficiency-cronjob
 spec:
   concurrencyPolicy: "Forbid"
-  schedule: "0 0 * * *"
+  schedule: "0 19 * * *"
   jobTemplate:
     spec:
       backoffLimit: 2
@@ -36,6 +36,11 @@ spec:
             - name: aws-credentials
               mountPath: "/root/.aws/"
               readOnly: true
+            resources:
+              limits:
+                memory: 2G
+              requests:
+                memory: 2G
           volumes:
           - name: config
             secret:

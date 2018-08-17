@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { VPLIST } from './config';
-import { formatMoneyAnnual, formatName } from './formats';
+import { formatMoneyAnnualIcon, formatMoneyAnnual, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Analytics from './analytics';
 
@@ -45,14 +45,14 @@ const Instance = ({instance, timePeriod}) => {
     </Tooltip>
   );
   return (
-    <tr>
+    <tr className="zebra">
       <td>{instance.name}</td>
       <td>{instance.type}</td>
       <td>{instance.recommend}</td>
-      <td>{formatMoneyAnnual(instance.waste)}</td>
-      <td>{formatMoneyAnnual(instance.cost)}</td>
-      <td className="owner_td">
-        {owner_el}
+      <td><span className={instance.waste > 0 ? 'money good' : 'money bad'}>{formatMoneyAnnual(instance.waste)}</span></td>
+      <td><span className="money">{formatMoneyAnnual(instance.cost)}</span></td>
+      <td>
+        <span className="owner-link">{owner_el}</span>
         <OverlayTrigger placement="left" overlay={tooltip} onMouseOver={() => Analytics.record({
           name: 'tooltip',
           attributes: {
@@ -63,7 +63,7 @@ const Instance = ({instance, timePeriod}) => {
           <i className="far fa-question-circle"></i>
         </OverlayTrigger>
       </td>
-      <td>{vp_el}</td>
+      <td><span className="owner-link">{vp_el}</span></td>
     </tr>
   )
 };

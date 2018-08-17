@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Instances from './instances';
-import { VPLIST } from './config';
+import { VPLIST, HELP_LINK, HELP_TEXT } from './config';
 
 import { formatMoneyAnnual, formatMoneyAnnualIcon, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
@@ -15,41 +15,47 @@ Analytics.setup();
 const TopBar = ({timePeriod}) => {
   const home_url = "/"+timePeriod+"/allocation/";
   return (
-    <header id="top_bar">
+    <header>
     <a href={home_url} onClick={() => Analytics.record({
       name: 'click',
       attributes: { target: 'logo' }
     })}>
-      <img src={"/"+timePeriod+"/public/logo.svg"} alt="CPE logo" />
+      <img src={"/"+timePeriod+"/public/logo.svg"} alt="CPE logo" height="40px" />
     </a>
-    <span className="title">
-      <span>Cloud Efficiency c-type Rightsizing</span>
+    <span className="title">Cloud Efficiency</span>
+    <span className="title hd-only">c-type Rightsizing</span>
+    <span className="title hd-only">
+      <a href="https://github.com/Symantec/cloudefficiency/issues" target="_blank" onClick={() => Analytics.record({
+        name: 'click',
+        attributes: { target: 'issues' }
+      })}><span>Issues</span><i className="fab fa-github"></i></a>
     </span>
-    <a href="https://github.com/Symantec/cloudefficiency/issues" onClick={() => Analytics.record({
-      name: 'click',
-      attributes: { target: 'issues' }
-    })}>Issues<i className="fab fa-github"></i></a>
     </header>
   );
 };
 const BottomBar = () => (
-  <footer id="bottom_bar">
-    <span><i className="far fa-copyright"></i> 2018 CPE | Jack Phelan</span>
+  <footer>
+    <i className="far fa-copyright hd-only"></i>
+    <span className="hd-only">2018 CPE</span>
+      <a href={HELP_LINK} target="_blank" target="_blank" onClick={() => Analytics.record({
+        name: 'click',
+        attributes: { target: 'help' }
+      })}>{HELP_TEXT}</a>
   </footer>
 );
 const User = ({user, timePeriod}) => {
   let url = `/${timePeriod}/allocation/${user.user_saml_name}.html`;
   return (
-    <React.Fragment>
-      <span className="a_wrapper zebra"><a href={url} onClick={() => Analytics.record({
+    <div className="content-wrapper zebra">
+      <span className="a-wrapper"><a href={url} onClick={() => Analytics.record({
         name: 'click',
         attributes: {
             target: 'teammember',
             targetUser: user.user_saml_name
         }
       })}>{formatName(user.user_saml_name)}</a></span>
-      <span className="zebra">{formatMoneyAnnualIcon(user.org_waste, user.org_instance_count)}</span>
-    </React.Fragment>
+      <span>{formatMoneyAnnualIcon(user.org_waste, user.org_instance_count, true)}</span>
+    </div>
   );
 }
 
@@ -66,21 +72,24 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
             target: 'manager',
             targetUser: manager.user_saml_name
         }
-    })}>{formatName(manager)}</a></span>);
+    })}><span className="manager-link">{formatName(manager)}</span></a></span>);
   }
   if (targetUser) {
     userSection = (
       <React.Fragment>
-        <h2>{formatName(targetUser.user_saml_name)}</h2>
-        <div><span>Personal potential annual savings: </span></div>
-        <div><span>{formatMoneyAnnualIcon(targetUser.waste, targetUser.instance_count)}</span></div>
+        <h3>{formatName(targetUser.user_saml_name)}</h3>
+        <div>
+          <span className="mobile-only">Can save: </span>
+          <span className="hd-only">Personal potential annual savings: </span>
+          <span>{formatMoneyAnnualIcon(targetUser.waste, targetUser.instance_count, true)}</span>
+        </div>
         <div>{manager_el}</div>
       </React.Fragment>
     );
     totalWaste = targetUser.org_waste;
     totalInstanceCount = targetUser.org_instance_count;
   } else {
-    userSection = (<h2>Leadership Team</h2>);
+    userSection = (<h3>Leadership Team</h3>);
     totalWaste = users.map((u) => u.org_waste).reduce((a, b) => a + b, 0);
     totalInstanceCount = users.map((u) => u.org_instance_count).reduce((a, b) => a + b, 0);
   }
@@ -108,27 +117,23 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
     );
   }
   return (
-    <div id="user_select">
-      <div className="top_section">
+    <div id="user-select">
+      <div className="top-section">
         {userSection}
-        <div className="fill_space"></div>
         <OverlayTrigger onMouseOver={() => Analytics.record({
           name: 'tooltip',
           attributes: { target: 'leadership' }
         })} placement="bottom" overlay={tooltip}>
-          <i className="far fa-question-circle"></i>
+        <i className="far fa-question-circle"></i>
         </OverlayTrigger>
       </div>
     { users.length > 0 && 
-        <div className="user_section">
-          <div className="bar"></div>
+        <div className="user-section">
           <span>{targetUser ? 'Direct Reports' : 'Team Members'}</span>
           <span>Potential Annual Savings</span>
-          <div className="bar"></div>
           {users_ordered.map((user) => <User user={user} key={user.user_saml_name} timePeriod={timePeriod} />)}
-          <div className="bar"></div>
           <span>Team Total:</span>
-          <span>{formatMoneyAnnualIcon(totalWaste, totalInstanceCount)}</span>
+          <span>{formatMoneyAnnualIcon(totalWaste, totalInstanceCount, true)}</span>
         </div>
     }
     </div>

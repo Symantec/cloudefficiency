@@ -18,6 +18,19 @@ envsubst < cronjob.yaml | kubectl create -f -
 kubectl create job --from=cronjob/cloudefficiency-cronjob cloudefficiency-job
 ```
 
+or
+
+```
+docker build . -t cloudefficiency
+docker run -it \
+  -v `pwd`'/frontend/src/config.js:/app/frontend/src/config.js' \
+  -v `pwd`'/report/config.json:/app/report/config.json' \
+  -v "$HOME/.aws/:/root/.aws/" \
+  -e "BUCKET=$BUCKET" \
+  -e "AWS_PROFILE=$AWS_PROFILE" \
+  cloudefficiency
+```
+
 # EC2 c-type instance cost/waste interactive reports by team and manager.
 Three stages to produce EC2 c-type instance cost/waste interactive reports.
 ldap data + instance data -> user hierarchy and instance data -> static html/js isomorphic React pages.
@@ -65,8 +78,10 @@ const awsmobile = {
     'aws_resource_name_prefix': <string>
 }
 const VPLIST = [<string>...]
+const HELP_LINK = 'https://slack.com/app_redirect?channel=cloudefficiency';
+const HELP_TEXT = 'slack channel';
 
-export { awsmobile, VPLIST };
+export { awsmobile, VPLIST, HELP_TEXT, HELP_LINK };
 
 ```
 `config.json` in `report/config.json`
@@ -100,14 +115,14 @@ Root Render (document.referrer, page)
 
 Analytics.updateEndpoint({
     page: ...,
-	referrer: ...,
+    referrer: ...,
 })
 
 click CPE logo
 {
     name: 'click',
     attributes: {
-    	target: 'logo'
+        target: 'logo'
     },
 });
 
@@ -115,7 +130,15 @@ click issues
 {
     name: 'click',
     attributes: {
-    	target: 'issues'
+        target: 'issues'
+    },
+});
+
+click help
+{
+    name: 'click',
+    attributes: {
+        target: 'help'
     },
 });
 
@@ -123,8 +146,8 @@ click teammember
 {
     name: 'click',
     attributes: {
-    	target: 'teammember',
-    	targetUser: 'name'
+        target: 'teammember',
+        targetUser: 'name'
     },
 });
 
@@ -132,8 +155,8 @@ click manager
 {
     name: 'click',
     attributes: {
-    	target: 'manager',
-    	targetUser: 'name'
+        target: 'manager',
+        targetUser: 'name'
     },
 });
 
@@ -141,9 +164,9 @@ click owner
 {
     name: 'click',
     attributes: {
-    	target: 'instanceOwner',
-    	targetUser: 'name',
-    	targetInstance: 'id'
+        target: 'instanceOwner',
+        targetUser: 'name',
+        targetInstance: 'id'
     },
 });
 
@@ -151,9 +174,9 @@ click ownerVp
 {
     name: 'click',
     attributes: {
-    	target: 'pwmerVP',
-    	targetUser: 'name',
-    	targetInstance: 'id'
+        target: 'pwmerVP',
+        targetUser: 'name',
+        targetInstance: 'id'
     },
 });
 
@@ -161,13 +184,13 @@ hover tooltip
 {
     name: 'tooltip',
     attributes: {
-    	target: 'leadership' | 'user' | 'id' | 'type' | 'suggest' | 'waste' | 'cost' | 'owner' | 'vpOwner' | 'attribution', 'moneyExplanation,
+        target: 'leadership' | 'user' | 'id' | 'type' | 'suggest' | 'waste' | 'cost' | 'owner' | 'vpOwner' | 'attribution', 'moneyExplanation,
     },
 });
 {
     name: 'tooltip',
     attributes: {
-    	target: 'attribution',
-    	targetUser: 'name'
+        target: 'attribution',
+        targetUser: 'name'
     },
 });

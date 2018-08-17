@@ -123,6 +123,8 @@ output/
 frontend/node_modules
 frontend/dist
 frontend/public/bundle.js
+frontend/public/index.css
+frontend/public/index.css.map
 frontend/public/logo.svg
 frontend/public/*.html
 frontend/output/

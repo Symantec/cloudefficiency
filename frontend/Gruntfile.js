@@ -3,10 +3,28 @@ let timePeriod = (new Date()).toLocaleDateString().replace(/\//g, "_");
 todayPublicBundleFiles = {};
 todayPublicBundleFiles['./output/' + timePeriod + "/public/bundle.js"] = "src/index.js";
 
+todayPublicCSSFiles = {};
+todayPublicCSSFiles['./output/' + timePeriod + "/public/index.css"] = "css/index.sass";
+
 module.exports = grunt => {
   require("load-grunt-tasks")(grunt);
 
   grunt.initConfig({
+    sass: {
+      dev: {
+        files: {
+          "public/index.css": "css/index.sass"
+        },
+      },
+      dist: {
+        files: todayPublicCSSFiles
+      },
+      options: {
+        implementation: require('node-sass'),
+        sourceMap: true,
+        sourceMapEmbed: true
+      }
+    },
     browserify: {
       options: {
           transform: [["babelify", {presets: ["env", "react"]}]],
@@ -52,11 +70,17 @@ module.exports = grunt => {
       }
     },
     watch: {
-      files: ['src/*.js'],
-      tasks: ['newer:babel:dist']
+      sass: {
+        files: ['css/*'],
+        tasks: ['newer:sass:dev']
+      },
+      babel: {
+        files: ['src/*.js'],
+        tasks: ['newer:babel:dist']
+      }
     }
   });
 
-  grunt.registerTask("prod", ["browserify:dist", "babel:dist"]);
+  grunt.registerTask("prod", ["browserify:dist", "babel:dist", "sass:dist"]);
   grunt.registerTask("default", ["concurrent:watchTarget"]);
 }

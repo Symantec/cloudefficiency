@@ -9,26 +9,28 @@ const formatName = (s) => {
   );
 };
 
-const formatAnnulMoneyNumber = (ten_day_money) => {
+const formatAnnualMoneyNumber = (ten_day_money) => {
   return Math.round((365/10) * ten_day_money).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const formatMoneyAnnual = (ten_day_money) => {
-  let formatted = formatAnnulMoneyNumber(ten_day_money);
-  return (<span className="money">{formatted}</span>);
+const formatMoneyAnnual = (ten_day_money, more_classNames) => {
+  let formatted = formatAnnualMoneyNumber(ten_day_money);
+  return formatted;
 };
 
-const formatMoneyAnnualIcon = (ten_day_money, instance_count) => {
-  let formatted = formatAnnulMoneyNumber(ten_day_money);
-  let el;
+const formatMoneyAnnualIcon = (ten_day_money, instance_count, is_big) => {
+  let className = "money";
+  let icon = false;
   if (ten_day_money == 0) {
-    if (instance_count == 0) {
-      el = (<span className="money good">{formatted}</span>);
-    } else {
-      el = (<span><span className="money good">{formatted}</span> <i className="far fa-smile"></i></span>);
+    className += " good";
+    if (instance_count > 0) {
+      icon = true;
     }
   } else {
-    el = (<span className="money">{formatted}</span>);
+    className += " bad";
+  }
+  if (is_big) {
+    className += " money-big";
   }
   const tooltip = (
     <Tooltip id="tooltip">
@@ -39,7 +41,10 @@ const formatMoneyAnnualIcon = (ten_day_money, instance_count) => {
           name: 'tooltip',
           attributes: { target: 'moneyExplanation' }
         })}>
-    {el}
+    <span>
+      <span className={className}>{formatAnnualMoneyNumber(ten_day_money)}</span>
+      {icon && <i className="far fa-smile"></i>}
+    </span>
   </OverlayTrigger>);
 };
 

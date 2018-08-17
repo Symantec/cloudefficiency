@@ -1,0 +1,498 @@
+/* latin */
+@font-face
+  font-family: 'Open Sans'
+  font-style: normal
+  font-weight: 400
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(https://fonts.gstatic.com/s/opensans/v15/mem8YaGs126MiZpBA-UFVZ0bf8pkAg.woff2) format('woff2')
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+  font-display: swap
+
+/* widths */
+$big-gap: 32px
+$medium-gap: 24 px
+$little-gap: 16px
+$min-gap: 8px
+
+/* media sizes */
+$desktop-hd-width-min: 1440px
+$desktop-width-min: 500px
+
+/* reset */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a
+  font-size: inherit
+  color: inherit
+  font-weight: inherit
+  margin: 0
+  text-decoration: none
+
+ol
+  padding-left: 0
+
+li
+  list-style: none
+
+i
+  margin-left: $little-gap
+
+table
+  display: block
+  border-collapse: collapse
+  white-space: inherit
+  line-height: inherit
+  font-weight: inherit
+  font-size: inherit
+  font-style: inherit
+  color: inherit
+  text-align: inherit
+  font-variant: inherit
+
+th, tr
+  text-align: inherit
+  font-weight: inherit
+
+::-webkit-scrollbar
+    -webkit-appearance: none
+    width: $min-gap
+    height: $min-gap
+
+::-webkit-scrollbar-thumb
+    border-radius: 4px
+    background-color: rgba(0,0,0,.5)
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5)
+
+/* colors */
+$eggplant-color: #221D43
+$pumpkin-color: #FBBA43
+$lightest-grey-color: #FAFAFA
+$light-grey-color: #F3F3F3
+$grey-color: #ECEDEC
+$dark-grey-color: #DCDCDC
+$needs-work-color: #FE0E13
+$job-done-color: #5EA55F
+$link-color: #598EBF
+$text-color: #213D61
+
+/* text styles */
+$banner-font: 'Open Sans', "Arial", sans-serif
+$global-font: $banner-font
+$fa-font: "Font Awesome 5 Free"
+
+@mixin text($fam, $color, $size)
+  font-family: $fam
+  color: $color
+  font-size: $size
+  line-height: $size
+  font-weight: normal
+  white-space: pre
+
+@mixin title-text
+  @include text($banner-font, $pumpkin-color, 30px)
+
+@mixin fa-title-text
+  @include text($fa-font, $pumpkin-color, 30px)
+
+@mixin h1-text
+  @include text($banner-font, $pumpkin-color, 20px)
+
+@mixin fa-h1-text
+  @include text($fa-font, $pumpkin-color, 20px)
+
+@mixin h2-text
+  @include text($banner-font, $pumpkin-color, 18px)
+
+@mixin fa-h2-text
+  @include text($fa-font, $pumpkin-color, 18px)
+
+@mixin h3-text
+  @include text($global-font, $text-color, 20px)
+
+@mixin fa-h3-text
+  @include text($fa-font, $text-color, 20px)
+
+@mixin h4-text
+  @include text($global-font, $text-color, 18px)
+
+@mixin fa-h4-text
+  @include text($fa-font, $text-color, 18px)
+
+@mixin big-text
+  @include text($global-font, $text-color, 16px)
+
+@mixin fa-big-text
+  @include text($fa-font, $text-color, 16px)
+
+@mixin small-text
+  @include text($global-font, $text-color, 14px)
+
+@mixin fa-small-text
+  @include text($fa-font, $text-color, 14px)
+
+@mixin big-money-good-text
+  @include text($global-font, $job-done-color, 16px)
+
+@mixin small-money-good-text
+  @include text($global-font, $job-done-color, 14px)
+
+@mixin big-money-bad-text
+  @include text($global-font, $needs-work-color, 16px)
+
+@mixin small-money-bad-text
+  @include text($global-font, $needs-work-color, 14px)
+
+@mixin link-underline
+  border-bottom: 1px solid
+  text-decoration: none
+
+@mixin title-link-text
+  @include text($banner-font, $pumpkin-color, 30px)
+  @include link-underline
+
+@mixin h1-link-text
+  @include text($banner-font, $pumpkin-color, 20px)
+  @include link-underline
+
+@mixin big-link-text
+  @include text($global-font, $text-color, 16px)
+  @include link-underline
+
+@mixin small-link-text
+  @include text($global-font, $text-color, 14px)
+  @include link-underline
+
+/* shared styles */
+@mixin shadow-style
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50)
+
+@mixin bar-style
+  @include shadow-style
+  background-color: $eggplant-color
+  padding: $little-gap
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  align-items: center
+
+@mixin column-style
+  @include shadow-style
+  background-color: $grey-color
+  padding: $big-gap
+  display: flex
+  flex-direction: column
+  max-height: 100%
+  overflow: auto
+
+
+@mixin table-header-style
+  background: $dark-grey-color
+
+@mixin table-row-even-style
+
+@mixin table-row-odd-style
+  background: $light-grey-color
+
+body
+  margin: 0
+  padding: 0
+  background-color: $lightest-grey-color
+
+html, body
+  overflow-x: hidden
+
+body
+  position: relative
+
+.title
+  @mixin fa-title-text
+
+  &:nth-of-type(1), &:nth-of-type(2)
+    text-transform: uppercase
+
+h3
+  @include h3-text
+
+#root
+  display: grid
+  width: 100%
+  height: 100%
+  grid-template-rows: auto auto auto 40px
+  grid-gap: $big-gap
+  grid-template-areas: "header" "sidebar" "content" "footer"
+
+  @media (min-width: $desktop-width-min)
+    grid-gap: 10px
+    grid-template-rows: 80px 1fr 40px
+    grid-template-columns: auto auto
+    grid-template-areas: "header  header" "sidebar content" "footer  footer"
+    justify-content: center
+
+
+.content-wrapper
+  display: contents
+
+.zebra:nth-child(even) > *
+  @include table-row-odd-style
+
+.money
+  @include small-text
+
+  &::before
+    content: "$"
+
+  &.big-money
+    @include big-text
+
+  &.bad
+    @include small-money-bad-text
+
+    &.big-money
+      @include big-money-good-text
+
+  &.good
+    @include small-money-good-text
+
+    &.big-money
+      @include big-money-good-text
+
+.fa-smile
+    color: green
+
+header
+  grid-area: header
+  @include bar-style
+  @include title-text
+
+  a span
+    @include title-link-text
+    display: inline-block
+
+  & > *
+    margin: 0
+    padding: $little-gap
+
+  @media (min-width: $desktop-width-min)
+    flex-direction: row
+
+    & > *:nth-child(2)
+      margin-left: auto
+
+    & > *:nth-child(3)
+      margin-right: auto
+
+    & > span
+      margin-bottom: -14px /* offset to bottom of text in link */
+
+
+footer
+  grid-area: footer
+  @include bar-style
+  @include h1-text
+
+  a
+    @include h1-link-text
+    display: inline-block
+
+  @media (min-width: $desktop-width-min)
+    flex-direction: row
+    justify-content: center
+
+    & > *:last-child
+      margin-left: $little-gap
+
+#user-select
+  grid-area: sidebar
+  @include column-style
+  @include big-text
+  position: relative /* for absolute icon placement */
+
+  .top-section
+    margin-bottom: $little-gap
+    justify-content: space-between
+    flex-direction: column
+    flex: none
+
+    div
+      padding-top: $min-gap
+
+    i.fa-question-circle
+      @include fa-h3-text
+      position: absolute
+      top: $big-gap
+      right: $big-gap
+
+    .a-wrapper
+      display: flex
+
+    .manager-link
+      @include big-link-text
+      display: inline-block
+
+  .user-section
+    flex: none
+    overflow: visible
+    display: grid
+    grid-template-columns: 1fr 1fr
+
+    a
+      @include big-link-text
+      display: inline-block
+
+    & > span
+      @include table-header-style
+
+    span
+      padding: $min-gap $little-gap
+
+  li
+    display: flex
+    justify-content: space-between
+
+#instances
+  grid-area: content
+  @include column-style
+  @include small-text
+
+  thead
+    @include table-header-style
+    @include big-text
+
+  .owner-link
+    @include small-link-text
+    display: inline-block
+
+  i
+    @include fa-small-text
+
+  td, th
+    padding: $min-gap $little-gap
+
+.hd-only
+  display: none !important
+  @media (min-width: $desktop-width-min)
+    display: initial !important
+
+.mobile-only
+  display: initial
+  @media (min-width: $desktop-width-min)
+    display: none
+
+/* bootstrap tooltip */
+.tooltip
+  position: absolute
+  z-index: 1070
+  display: block
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+  font-style: normal
+  font-weight: normal
+  letter-spacing: normal
+  line-break: auto
+  line-height: 1.42857143
+  text-align: left
+  text-align: start
+  text-decoration: none
+  text-shadow: none
+  text-transform: none
+  white-space: normal
+  word-break: normal
+  word-spacing: normal
+  word-wrap: normal
+  font-size: 12px
+  opacity: 0
+  filter: alpha(opacity=0)
+
+.tooltip.in
+  opacity: 0.9
+  filter: alpha(opacity=90)
+
+.tooltip.top
+  margin-top: -3px
+  padding: 5px 0
+
+.tooltip.right
+  margin-left: 3px
+  padding: 0 5px
+
+.tooltip.bottom
+  margin-top: 3px
+  padding: 5px 0
+
+.tooltip.left
+  margin-left: -3px
+  padding: 0 5px
+
+.tooltip-inner
+  max-width: 200px
+  padding: 3px 8px
+  color: #ffffff
+  text-align: center
+  background-color: #000000
+  border-radius: 4px
+
+.tooltip-arrow
+  position: absolute
+  width: 0
+  height: 0
+  border-color: transparent
+  border-style: solid
+
+.tooltip.top .tooltip-arrow
+  bottom: 0
+  left: 50%
+  margin-left: -5px
+  border-width: 5px 5px 0
+  border-top-color: #000000
+
+.tooltip.top-left .tooltip-arrow
+  bottom: 0
+  right: 5px
+  margin-bottom: -5px
+  border-width: 5px 5px 0
+  border-top-color: #000000
+
+.tooltip.top-right .tooltip-arrow
+  bottom: 0
+  left: 5px
+  margin-bottom: -5px
+  border-width: 5px 5px 0
+  border-top-color: #000000
+
+.tooltip.right .tooltip-arrow
+  top: 50%
+  left: 0
+  margin-top: -5px
+  border-width: 5px 5px 5px 0
+  border-right-color: #000000
+
+.tooltip.left .tooltip-arrow
+  top: 50%
+  right: 0
+  margin-top: -5px
+  border-width: 5px 0 5px 5px
+  border-left-color: #000000
+
+.tooltip.bottom .tooltip-arrow
+  top: 0
+  left: 50%
+  margin-left: -5px
+  border-width: 0 5px 5px
+  border-bottom-color: #000000
+
+.tooltip.bottom-left .tooltip-arrow
+  top: 0
+  right: 5px
+  margin-top: -5px
+  border-width: 0 5px 5px
+  border-bottom-color: #000000
+
+.tooltip.bottom-right .tooltip-arrow
+  top: 0
+  left: 5px
+  margin-top: -5px
+  border-width: 0 5px 5px
+  border-bottom-color: #000000
+
