@@ -1,0 +1,139 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "67B7CBDE-320A-440F-AB68-02D68D8ACF30",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32.94117647058823,
+    "width": 875.9999999999987,
+    "x": 0,
+    "y": 260
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row8",
+  "nameIsFixed": true,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "4D4A549B-A26B-4E34-B376-D1FB6E855BD0_symbolID",
+      "value": "1DAA8310-AD15-4AC5-9934-079B4B06C4AE"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4B71835F-7899-413E-8C51-CDB46794A1AA_stringValue",
+      "value": " "
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Clarence Diaz"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "5188442F-F3AA-4676-84CA-0FD36C633E72",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Tommie Hickle"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "0ED2D1EE-D068-4BD0-AFA4-47410F361F8C",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Lizzie Wisoky III"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "E17509ED-09A2-40D6-97F8-DE8F6894F105",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "657.79"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "EDA8D335-47E2-4655-A5E8-9433816208E3",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "999.98"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "434C32B4-6EE1-42D1-89D1-20B2DC066B77",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "m4.2xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "222650B9-C7CB-4478-8B8F-F187577397EB",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "t2.4xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "B39310AD-5B1A-44E9-A6C7-7CE2479C9343",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "omnis-conseq"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "5AF88052-ED2D-4CFC-BD08-2AF7F64F6272",
+  "verticalSpacing": 0
+}

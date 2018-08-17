@@ -1,0 +1,139 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "93DB93AA-AB34-4D35-8903-4779061BA452",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32.94117647058823,
+    "width": 875.9999999999987,
+    "x": 0,
+    "y": 227
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row7",
+  "nameIsFixed": true,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "4D4A549B-A26B-4E34-B376-D1FB6E855BD0_symbolID",
+      "value": "1DAA8310-AD15-4AC5-9934-079B4B06C4AE"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4B71835F-7899-413E-8C51-CDB46794A1AA_stringValue",
+      "value": " "
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Clarence Diaz"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "B66CB209-55B3-43E4-9C58-83B79ECE9451",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Lesly Reinger"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "6F19CA1C-4AFB-4D48-B93C-15792A3D7616",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Miss Albina Sipes"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "01A1D0EA-2F33-483B-A9CF-A3D4550572FE",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "545.05"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "4EA6A370-A2BD-4192-BFA3-F175DE18B814",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "462.54"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "C5800D39-B60F-44D4-B878-65D137704B8D",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "m4.2xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "D4057357-B695-4AED-8570-D7677BC12A68",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "m4.8xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "F0282AC1-6EE5-4B86-8758-AB44FCB95AE1",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "ipsa-eos-harum"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "5AF88052-ED2D-4CFC-BD08-2AF7F64F6272",
+  "verticalSpacing": 0
+}

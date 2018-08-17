@@ -1,0 +1,108 @@
+{
+  "_class": "artboard",
+  "backgroundColor": {
+    "_class": "color",
+    "alpha": 1,
+    "blue": 1,
+    "green": 1,
+    "red": 1
+  },
+  "booleanOperation": -1,
+  "do_objectID": "52A79AFB-6AF8-4DE1-9B39-CCB6B35362E9",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 400,
+    "width": 400,
+    "x": 403,
+    "y": -377
+  },
+  "hasBackgroundColor": false,
+  "hasClickThrough": true,
+  "horizontalRulerData": {
+    "_class": "rulerData",
+    "base": 0,
+    "guides": [
+    ]
+  },
+  "includeBackgroundColorInExport": true,
+  "includeInCloudUpload": true,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isFlowHome": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "layers": [
+    {
+      "class": "shapeGroup",
+      "id": "16DF7351-CA85-443D-A45A-04A1F2286405"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "900AA001-E8CE-4E3C-8D1F-4184BEFFCBD0"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "24DA5CE3-6A00-4608-BD2F-4B4A2426292B"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "486D1FCE-FD4B-4324-AC23-1C0273F4050E"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "8C1C541B-76CA-48AF-BDFC-172E47A9C549"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "4129036E-1581-4D4C-88DB-D5978A4969FA"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "D42FE27D-3BA4-40FA-9EAF-596B4F50FF3A"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "D680A710-A48C-4C7C-AC45-B98ADC040672"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "FE66E0D6-157C-4EE3-86C5-77F55C7F0A3C"
+    },
+    {
+      "class": "shapeGroup",
+      "id": "2572456B-2F71-4130-94A4-2E2BFF9C39F1"
+    }
+  ],
+  "name": "Colors",
+  "nameIsFixed": true,
+  "resizesContent": false,
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "shouldBreakMaskChain": true,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "verticalRulerData": {
+    "_class": "rulerData",
+    "base": 0,
+    "guides": [
+    ]
+  }
+}

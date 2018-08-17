@@ -1,0 +1,139 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "A0545B42-B0B9-4477-B9B1-F59311250F41",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32.94117647058823,
+    "width": 875.9999999999987,
+    "x": 0,
+    "y": 455
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row14",
+  "nameIsFixed": true,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "4D4A549B-A26B-4E34-B376-D1FB6E855BD0_symbolID",
+      "value": "1DAA8310-AD15-4AC5-9934-079B4B06C4AE"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4B71835F-7899-413E-8C51-CDB46794A1AA_stringValue",
+      "value": " "
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Clarence Diaz"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "08332459-BFD2-4409-B588-86BB8F9C4F8A",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Kasandra Spinka"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "85E6879B-078E-4EE9-8674-59E674B37B2F",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Maybelle Herty"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "19D5E188-2FB5-4902-830E-4ABE5CAAD35A",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "512.89"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "19A4FA91-2C3A-415E-9715-D0D51089D89A",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "213.86"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "80E0E1F7-7349-403E-B5D7-012523E3B734",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "t2.8xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "AC987F3D-D3D4-49E2-87E7-9F6811D360C1",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "c5.4xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "22E7E7F0-3442-43D3-ACD3-FDBEDE839682",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "a-modi-veniam"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "5AF88052-ED2D-4CFC-BD08-2AF7F64F6272",
+  "verticalSpacing": 0
+}

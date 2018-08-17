@@ -1,0 +1,69 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "7A3A214D-B7A3-4A03-B167-75D63D6056C8",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32,
+    "width": 516,
+    "x": 0,
+    "y": 96
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row",
+  "nameIsFixed": true,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "145C3EF4-D8D7-4921-9CE2-D128846B6B89",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "Jim Jones"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "6DCDB1B2-1DE4-411B-946E-2C63E50A0C24",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "$111,111"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "BFDFBC1E-5204-4AC8-BA57-2D0D86158BB1",
+  "verticalSpacing": 0
+}

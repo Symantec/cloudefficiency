@@ -106,6 +106,9 @@ venv.bak/
 # osx
 .DS_Store
 
+# sketch
+*.sketch
+
 # config
 config.json
 

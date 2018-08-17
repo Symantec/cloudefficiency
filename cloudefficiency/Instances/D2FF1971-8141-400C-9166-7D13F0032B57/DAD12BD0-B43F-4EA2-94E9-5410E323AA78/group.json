@@ -1,0 +1,88 @@
+{
+  "_class": "group",
+  "booleanOperation": -1,
+  "do_objectID": "DAD12BD0-B43F-4EA2-94E9-5410E323AA78",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 840,
+    "width": 940,
+    "x": 490,
+    "y": 100
+  },
+  "hasClickThrough": false,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 2,
+  "layers": [
+    {
+      "class": "symbolInstance",
+      "id": "18EBB4D9-22B9-4935-99BE-727971228439"
+    },
+    {
+      "class": "group",
+      "id": "9DDECEEB-03E5-4803-911E-BD4844A9A3CD"
+    },
+    {
+      "class": "text",
+      "id": "D5F86C92-CF32-4538-A415-1B5CC1B4458D"
+    },
+    {
+      "class": "symbolInstance",
+      "id": "A4B3C18E-EA9F-4EA3-AE06-E2ABD55F9969"
+    }
+  ],
+  "name": "instances",
+  "nameIsFixed": true,
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "fills": [
+      {
+        "_class": "fill",
+        "color": {
+          "_class": "color",
+          "alpha": 1,
+          "blue": 0.847,
+          "green": 0.847,
+          "red": 0.847
+        },
+        "fillType": 4,
+        "image": {
+          "_class": "MSJSONFileReference",
+          "_ref": "images/ac9a6ff89dce101de809f7555f82f6cdf2b1fab2.png",
+          "_ref_class": "MSImageData"
+        },
+        "isEnabled": true,
+        "noiseIndex": 0,
+        "noiseIntensity": 0,
+        "patternFillType": 1,
+        "patternTileScale": 1
+      }
+    ],
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "userInfo": {
+    "com.invisionlabs.data": {
+      "json-plugin-data": "{\"name\":\"example_instances.json\",\"paths\":{\"selection\":[],\"repeat\":[\"owner\"]},\"path\":\"D105F938-D13F-42A3-B05B-1226E1FAABAD.json\"}"
+    }
+  }
+}

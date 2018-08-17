@@ -1,0 +1,154 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "406FF7EE-CD95-40D3-A065-13E143744E9E",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32,
+    "width": 875.9999999999987,
+    "x": 0,
+    "y": 358
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row11",
+  "nameIsFixed": false,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4B71835F-7899-413E-8C51-CDB46794A1AA_stringValue",
+      "value": " "
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Lura Murray"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Estella Bennett"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B_symbolID",
+      "value": "8148D05E-1C1D-476C-8AF5-AD8CD0CF6FDF"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "$84.52"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE/4AEFBA46-D843-4A37-A19B-D21DD686E8BB_stringValue",
+      "value": "Brendan Kim"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "DF95A29D-A308-4FEE-9C57-344EF592B022",
+      "overrideName": "30A87AF5-5F9F-4E64-AF06-7CA841CFB665/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Reyes Donnelly"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "B6EB6BB3-2244-470C-B234-66594C3665E2",
+      "overrideName": "74889E0D-A164-4C2B-9580-D5FEE6F2834B/3F400242-8CDB-4D8B-A944-EC018E372498_stringValue",
+      "value": "Gabriella Rau"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "1E3E696B-46BB-4F77-824E-D1C770B4D6FC",
+      "overrideName": "3EA89D00-C41D-4A31-8542-653C84A38C30/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "981.71"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "20733682-9888-4AB6-84E7-AFDFE3E06BA3",
+      "overrideName": "C523B296-B736-4A22-B5ED-7A20D7DEB8A8/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "393.52"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "68652CE7-7EBE-48E1-95DC-8F06ACD396E9",
+      "overrideName": "AA2FFE8C-5D04-487A-B590-86028FEA5ABE/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "m5.2xlarge"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "5E9F65C4-6ECA-4E18-89D3-E2B911C28271",
+      "overrideName": "FF6EAD09-DE60-4823-BD34-BD8E4AF8D186/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "m4.large"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "3B8A3DC6-C7CC-44E7-B628-2EB1AE06ADA0",
+      "overrideName": "09E1A254-1876-4C75-B548-F667C73C050B/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "aliquam-qui-te"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "5AF88052-ED2D-4CFC-BD08-2AF7F64F6272",
+  "userInfo": {
+    "com.invisionlabs.data": {
+      "json-plugin-data": "{\"name\":\"example_instances.json\",\"paths\":{\"selection\":[],\"repeat\":[\"id\"]},\"path\":\"D105F938-D13F-42A3-B05B-1226E1FAABAD.json\"}"
+    }
+  },
+  "verticalSpacing": 0
+}

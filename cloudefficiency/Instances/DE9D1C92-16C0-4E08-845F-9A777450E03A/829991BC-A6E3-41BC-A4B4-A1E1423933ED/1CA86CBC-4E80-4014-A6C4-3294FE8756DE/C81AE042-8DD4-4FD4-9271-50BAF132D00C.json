@@ -1,0 +1,69 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "C81AE042-8DD4-4FD4-9271-50BAF132D00C",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32,
+    "width": 516,
+    "x": 0,
+    "y": 160
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row",
+  "nameIsFixed": true,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "86E7D947-F48D-4665-8850-B00D70CDC7E4",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "John Jimson"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "276FEE73-1398-4AA5-AB33-B215D3CB2F27",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "$1,111"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "BFDFBC1E-5204-4AC8-BA57-2D0D86158BB1",
+  "verticalSpacing": 0
+}

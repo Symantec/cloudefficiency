@@ -1,0 +1,71 @@
+{
+  "_class": "symbolInstance",
+  "booleanOperation": -1,
+  "do_objectID": "7996A121-91F0-4C47-9AB6-D8FB3A0DC997",
+  "exportOptions": {
+    "_class": "exportOptions",
+    "exportFormats": [
+    ],
+    "includedLayerIds": [
+    ],
+    "layerOptions": 0,
+    "shouldTrim": false
+  },
+  "frame": {
+    "_class": "rect",
+    "constrainProportions": false,
+    "height": 32,
+    "width": 516,
+    "x": 0,
+    "y": 32
+  },
+  "horizontalSpacing": 0,
+  "isFixedToViewport": false,
+  "isFlippedHorizontal": false,
+  "isFlippedVertical": false,
+  "isLocked": false,
+  "isVisible": true,
+  "layerListExpandedType": 0,
+  "name": "row",
+  "nameIsFixed": false,
+  "overrideValues": [
+    {
+      "_class": "overrideValue",
+      "do_objectID": "0EF264BC-3A5B-4F59-86B2-CE72DC88E102",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1_symbolID",
+      "value": "64D2FF40-71DF-439D-AAAE-BC4454E46577"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "C0D93AED-5E58-48A1-8393-B5DB9D0F17CE",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B_symbolID",
+      "value": "311DDD5C-A22B-4D57-8E30-ACB0CBF0FDBF"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "F0453601-9B16-421C-B285-B70618273F09",
+      "overrideName": "0C9E1636-7C13-4CED-9134-D00A3D729CD1/342D9C96-7926-4D15-A2ED-5FFD1CBED13C_stringValue",
+      "value": "Tim Cook"
+    },
+    {
+      "_class": "overrideValue",
+      "do_objectID": "77F64BF0-C6C2-4A3E-BCAB-E6602DEC462B",
+      "overrideName": "281B119A-AC14-4379-8B59-7D834D1E997B/4F3204F3-33F0-433C-BBBF-9C94D1A9C13E_stringValue",
+      "value": "$123,456"
+    }
+  ],
+  "resizingConstraint": 63,
+  "resizingType": 0,
+  "rotation": 0,
+  "scale": 1,
+  "shouldBreakMaskChain": false,
+  "style": {
+    "_class": "style",
+    "endMarkerType": 0,
+    "miterLimit": 10,
+    "startMarkerType": 0,
+    "windingRule": 1
+  },
+  "symbolID": "BFDFBC1E-5204-4AC8-BA57-2D0D86158BB1",
+  "verticalSpacing": 0
+}
