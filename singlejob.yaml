@@ -13,7 +13,6 @@ spec:
       restartPolicy: Never
       containers:
       - name: cloudefficiency
-        imagePullPolicy: Never
         image: $IMAGE
         command: ["/usr/bin/time"]
         args: ["-v", "./upload.sh"]
