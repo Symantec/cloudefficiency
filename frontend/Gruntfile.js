@@ -1,10 +1,10 @@
 let timePeriod = (new Date()).toLocaleDateString().replace(/\//g, "_");
 
 todayPublicBundleFiles = {};
-todayPublicBundleFiles['./output/' + timePeriod + "/public/bundle.js"] = "src/index.js";
+todayPublicBundleFiles['../output/' + timePeriod + "/public/bundle.js"] = "src/bundle_index.js";
 
 todayPublicCSSFiles = {};
-todayPublicCSSFiles['./output/' + timePeriod + "/public/index.css"] = "css/index.sass";
+todayPublicCSSFiles['../output/' + timePeriod + "/public/index.css"] = "css/index.sass";
 
 module.exports = grunt => {
   require("load-grunt-tasks")(grunt);
@@ -26,15 +26,9 @@ module.exports = grunt => {
       }
     },
     browserify: {
-      options: {
-          transform: [["babelify", {presets: ["env", "react"]}]],
-          browserifyOptions : {
-            debug : true // source mapping
-          }
-      },
       dev: {
         files: {
-          "public/bundle.js": "src/index.js"
+          "public/bundle.js": "src/bundle_index.js"
         },
         options : {
           watch : true, // use watchify for incremental builds!
@@ -46,7 +40,15 @@ module.exports = grunt => {
         }
       },
       dist: {
-        files: todayPublicBundleFiles
+        files: todayPublicBundleFiles,
+        options : {
+          watch : false, // use watchify for incremental builds!
+          keepAlive : false, // watchify will exit unless task is kept alive
+          transform: [["babelify", {presets: ["env", "react"]}]],
+          browserifyOptions : {
+            debug : false // source mapping
+          }
+        }
       }
     },
     babel: {
@@ -57,11 +59,20 @@ module.exports = grunt => {
         files: [{
           expand: true,
           cwd: './src',
-          src: ['*.js'],
+          src: ['**/*.js'],
           dest: './dist',
           ext: '.js'
         }]
       }
+    },
+    eslint: {
+        options: {
+            configFile: "./node_modules/standard/eslintrc.json"
+        },
+        src: [
+            "Gruntfile.js",
+            "src/**/*.js"
+        ]
     },
     concurrent: {
       watchTarget: ['browserify:dev', 'watch'],

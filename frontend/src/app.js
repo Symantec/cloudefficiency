@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Instances from './instances';
+import { Instances } from './instances';
 import { VPLIST, HELP_LINK, HELP_TEXT } from './config';
 
 import { formatMoneyAnnual, formatMoneyAnnualIcon, formatName } from './formats';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Analytics from './analytics';
+import { isOwnedBy } from './util';
 
 
 Analytics.setup();
@@ -46,7 +47,7 @@ const BottomBar = () => (
 const User = ({user, timePeriod}) => {
   let url = `/${timePeriod}/allocation/${user.user_saml_name}.html`;
   return (
-    <div className="content-wrapper zebra">
+    <div className="content-wrapper zebra-container">
       <span className="a-wrapper"><a href={url} onClick={() => Analytics.record({
         name: 'click',
         attributes: {
@@ -141,6 +142,21 @@ const UserSelect = ({targetUser, manager, users, timePeriod}) => {
 };
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      is_loaded: false
+    };
+  }
+  loadAllInstances(callback) {
+    let req = new XMLHttpRequest();
+    req.responseType = 'json';
+    req.addEventListener("load", () => {
+      callback(req.response)
+    });
+    req.open("GET", `/${this.props.timePeriod}/public/allInstances.json`, true);
+    req.send();
+  }
   componentDidMount() {
     if (this.props.isClient) {
       let env = this.props.env || 'dev';
@@ -151,10 +167,16 @@ class App extends React.Component {
         env: env
       })
       Analytics.record({ name: 'AppMount'});
+      this.loadAllInstances((instances) => {
+        this.setState({
+          allInstances: instances,
+          is_loaded: true
+        });
+      });
     }
   }
   render() {
-    let {selectedUser, allUsers, allInstances, timePeriod, isClient} = this.props;
+    let {selectedUser, allUsers, initialInstances, instanceHeaders, timePeriod, isClient} = this.props;
     let userNames = VPLIST;
     let targetUser;
     let manager;
@@ -180,15 +202,19 @@ class App extends React.Component {
     if (targetUser) {
       ownerNames.push(targetUser.user_saml_name);
     }
-    const isOwnedBy = (i, ownerNames) => {
-      let intersection =  i.owners.filter(o => ownerNames.includes(o))
-      return intersection.length > 0;
+    let instances = initialInstances;
+    if (this.state.is_loaded) {
+      instances = this.state.allInstances;
+      if (targetUser) {
+        instances = this.state.allInstances.filter(i => isOwnedBy(i, [targetUser.user_saml_name]));
+      }
     }
+
     return (
       <React.Fragment>
         <TopBar timePeriod={timePeriod} />
         <UserSelect targetUser={targetUser} manager={manager} users={users} timePeriod={timePeriod} />
-        <Instances instances={allInstances.filter(i => isOwnedBy(i, ownerNames))} timePeriod={timePeriod} />
+        <Instances is_loaded={this.state.is_loaded} instances={instances} instanceHeaders={instanceHeaders} timePeriod={timePeriod} />
         <BottomBar />
       </React.Fragment>
     );
@@ -209,7 +235,8 @@ let userShape = PropTypes.shape({
 App.propTypes = {
   selectedUser: PropTypes.string,
   allUsers: PropTypes.objectOf(userShape).isRequired,
-  allInstances: PropTypes.array.isRequired,
+  initialInstances: PropTypes.array.isRequired,
+  instanceHeaders: PropTypes.object.isRequired,
   timePeriod: PropTypes.string.isRequired,
   env: PropTypes.string.isRequired,
   isClient: PropTypes.bool

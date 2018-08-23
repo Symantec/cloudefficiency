@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /app
 COPY ./report/requirements.txt /app/report/requirements.txt
 COPY ./frontend/package.json /app/frontend/package.json
-COPY ./frontend/package-lock.json /app/frontend/package-lock.json
+COPY ./frontend/npm-shrinkwrap.json /app/frontend/npm-shrinkwrap.json
 COPY LICENSE /app/
 WORKDIR /app/report
 RUN pip3 install -r requirements.txt

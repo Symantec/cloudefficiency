@@ -1,8 +1,5 @@
-import React from 'react';
-import App from './app';
 import express from 'express';
-import { renderToString } from 'react-dom/server';
-import HTMLTemplate from './template';
+import render_page from './page_template';
 import allUsers from './allUsers';
 import allInstances from './allInstances';
 
@@ -16,7 +13,7 @@ allUsers.forEach((u) => {
 
 const server = express();
 
-server.use('/today/public', express.static('public'));
+server.use('/*/public', express.static('public'));
 
 server.get('/', allocation);
 server.get('/:timePeriod/allocation', allocation);
@@ -25,21 +22,13 @@ server.get('/:timePeriod/allocation/:userSamlName', allocation);
 function allocation(req, res) {
 
   let timePeriod = req.params.timePeriod;
-  if (!timePeriod) {
-    timePeriod = 'today';
-  }
-
   let userSamlName = req.params.userSamlName
   if (userSamlName) {
     userSamlName = userSamlName.replace('.html', '');
   }
 
-  res.send(renderToString(<HTMLTemplate
-    body={<App selectedUser={userSamlName} allUsers={allUsersDict} allInstances={allInstances} timePeriod={timePeriod} env={'dev'}/>}
-    title={'Hello World'}
-    env={'dev'}
-    timePeriod={timePeriod}
-  />));
+  let fileBody = render_page('dev', allUsers, allInstances, userSamlName, timePeriod);
+  res.send(fileBody);
 };
 
 server.listen(8080);
