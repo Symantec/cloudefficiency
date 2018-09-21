@@ -135,6 +135,8 @@ frontend/src/vpList.js
 
 frontend/src/config.js
 
+server/authorizer/bundle/
+server/authorizer/bundle.zip
 server/bundle/
 server/bundle.zip
 server/stagevariables.json
