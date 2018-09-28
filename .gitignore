@@ -132,5 +132,8 @@ frontend/src/allInstances.js
 frontend/src/allUsers.js
 frontend/src/vpList.js
 
-
 frontend/src/config.js
+
+server/bundle/
+server/bundle.zip
+server/stagevariables.json
