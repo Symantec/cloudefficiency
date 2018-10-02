@@ -122,6 +122,7 @@ output/
 
 frontend/node_modules
 frontend/dist
+frontend/public/*.json
 frontend/public/bundle.js
 frontend/public/index.css
 frontend/public/index.css.map

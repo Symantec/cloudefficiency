@@ -9,9 +9,14 @@
 
 /* widths */
 $big-gap: 32px
-$medium-gap: 24 px
+$medium-gap: 24px
 $little-gap: 16px
 $min-gap: 8px
+
+$button-small-gap: 6px
+
+$border-radius: 2px
+$border-radius-big: 4px
 
 /* media sizes */
 $desktop-hd-width-min: 1440px
@@ -32,6 +37,9 @@ a
   text-decoration: none
 
 ol
+ul
+  margin: 0
+  padding: 0
   padding-left: 0
 
 li
@@ -40,7 +48,9 @@ li
 i
   margin-left: $little-gap
 
-table
+
+.rt-table
+  width: initial !important
   display: block
   border-collapse: collapse
   white-space: inherit
@@ -52,7 +62,13 @@ table
   text-align: inherit
   font-variant: inherit
 
-th, tr
+  .rt-thead.-filters
+    display: none
+
+  .rt-body
+    align-items: stretch
+
+.rt-th, .rt-tr
   text-align: inherit
   font-weight: inherit
 
@@ -62,7 +78,7 @@ th, tr
     height: $min-gap
 
 ::-webkit-scrollbar-thumb
-    border-radius: 4px
+    border-radius: $border-radius-big
     background-color: rgba(0,0,0,.5)
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5)
 
@@ -79,59 +95,59 @@ $link-color: #598EBF
 $text-color: #213D61
 
 /* text styles */
-$banner-font: 'Open Sans', "Arial", sans-serif
+$banner-font: 'Open Sans', "Helvetica", "Arial", sans-serif
 $global-font: $banner-font
 $fa-font: "Font Awesome 5 Free"
 
-@mixin text($fam, $color, $size)
+@mixin text($fam, $color, $size, $weight:normal)
   font-family: $fam
   color: $color
   font-size: $size
   line-height: $size
-  font-weight: normal
+  font-weight: $weight
   white-space: pre
 
 @mixin title-text
   @include text($banner-font, $pumpkin-color, 30px)
 
 @mixin fa-title-text
-  @include text($fa-font, $pumpkin-color, 30px)
+  @include text($fa-font, $pumpkin-color, 30px, 900)
 
 @mixin h1-text
   @include text($banner-font, $pumpkin-color, 20px)
 
 @mixin fa-h1-text
-  @include text($fa-font, $pumpkin-color, 20px)
+  @include text($fa-font, $pumpkin-color, 20px, 900)
 
 @mixin h2-text
   @include text($banner-font, $pumpkin-color, 18px)
 
 @mixin fa-h2-text
-  @include text($fa-font, $pumpkin-color, 18px)
+  @include text($fa-font, $pumpkin-color, 18px, 900)
 
 @mixin h3-text
   @include text($global-font, $text-color, 20px)
 
 @mixin fa-h3-text
-  @include text($fa-font, $text-color, 20px)
+  @include text($fa-font, $text-color, 20px, 900)
 
 @mixin h4-text
   @include text($global-font, $text-color, 18px)
 
 @mixin fa-h4-text
-  @include text($fa-font, $text-color, 18px)
+  @include text($fa-font, $text-color, 18px, 900)
 
 @mixin big-text
   @include text($global-font, $text-color, 16px)
 
 @mixin fa-big-text
-  @include text($fa-font, $text-color, 16px)
+  @include text($fa-font, $text-color, 16px, 900)
 
 @mixin small-text
   @include text($global-font, $text-color, 14px)
 
 @mixin fa-small-text
-  @include text($fa-font, $text-color, 14px)
+  @include text($fa-font, $text-color, 14px, 900)
 
 @mixin big-money-good-text
   @include text($global-font, $job-done-color, 16px)
@@ -168,6 +184,69 @@ $fa-font: "Font Awesome 5 Free"
 /* shared styles */
 @mixin shadow-style
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50)
+
+@mixin small-text-button-style
+  text-shadow: 0 3px rgba(0,0,0,0.20)
+  cursor: pointer
+  position: relative
+  top: 0px
+  transition: all ease 0.3s
+
+  &:hover
+    text-shadow: 0 2px rgba(0,0,0,0.2)
+    top: 1px
+
+  &:active
+    text-shadow: 0 0px rgba(0,0,0,0.2)
+    top: 3px
+
+  &:focus
+    outline: none
+
+
+@mixin small-button-style
+  box-shadow: 0 3px 0 0 rgba(0,0,0,0.20)
+  box-sizing: border-box
+  border-radius: $border-radius
+  cursor: pointer
+  padding: $button-small-gap
+  position: relative
+  top: 0px
+  transition: all ease 0.3s
+
+  &:hover
+    box-shadow: 0 2px 0 rgba(0,0,0,0.2)
+    top: 1px
+
+  &:active
+    box-shadow: 0 0px 0 rgba(0,0,0,0.2)
+    top: 3px
+
+  &:focus
+    outline: none
+
+  &[disabled]
+    box-shadow: none
+    top: 0px
+    cursor: not-allowed
+    background: $dark-grey-color
+
+@mixin option-list-style
+  @include shadow-style
+  position: absolute
+  z-index: 1
+  top: $big-gap + $min-gap
+  background: $light-grey-color
+  padding: $min-gap $min-gap
+
+  li
+    padding: $min-gap $min-gap
+    cursor: pointer
+    border-bottom: 1px solid $dark-grey-color
+
+    &:last-child
+      border-bottom: none
+
 
 @mixin bar-style
   @include shadow-style
@@ -235,7 +314,7 @@ h3
 .content-wrapper
   display: contents
 
-.zebra:nth-child(even) > *
+.zebra-container:nth-child(even) > *
   @include table-row-odd-style
 
 .money
@@ -356,10 +435,48 @@ footer
   grid-area: content
   @include column-style
   @include small-text
+  display: grid
+  grid-row-gap: $big-gap
+  grid-template-rows: auto 1fr
+  grid-template-columns: 1fr auto
+  grid-template-areas: "groupby options" "table table"
+  align-items: center
 
-  thead
+  .ReactTable
+    grid-area: table
+    align-self: start
+    justify-self: left
+    max-width: 100%
+    min-width: 0
+    max-height: 100%
+    min-height: 0
+
+    .-pagination .-btn
+      height: auto
+
+  .rt-thead
     @include table-header-style
     @include big-text
+
+    .rt-resizable-header-content
+      overflow: initial
+
+    .rt-th
+      position: relative /* to position filter list absolute */
+
+  .rt-thead.-header
+    box-shadow: none
+
+  .rt-tbody
+    .rt-td
+      border-right: none
+
+    .rt-tr-group
+      border-bottom: none
+
+
+  .rt-tr-group:nth-child(even) > *
+    @include table-row-odd-style
 
   .owner-link
     @include small-link-text
@@ -367,6 +484,79 @@ footer
 
   i
     @include fa-small-text
+
+  .fa-filter
+    grid-area: options
+    @include small-button-style
+    background: $grey-color
+
+  .fa-cog
+    @include fa-title-text
+    @include small-text-button-style
+    margin: 0 $big-gap
+
+  .filter-options
+    @include option-list-style
+    display: flex
+    flex-direction: column
+    align-items: start
+
+    .toggle-sort
+      @include small-button-style
+      background: $dark-grey-color
+
+  .group-tool
+    grid-area: groupby
+    display: flex
+    align-items: stretch
+    justify-items: start
+    flex-flow: row wrap
+    position: relative
+    padding: $min-gap
+    background: $lightest-grey-color
+    padding-bottom: 0
+    margin-bottom: -1 * $little-gap
+
+    & > *
+      margin-bottom: $min-gap !important
+
+    .group-tool-dialog
+      position: absolute
+      display: none
+      min-height: $big-gap
+
+    .group-tool-button
+      @include small-button-style
+      background: $pumpkin-color
+      width: $big-gap
+      height: $big-gap
+      padding: 0
+      margin: 0
+      align-self: start
+      flex: none
+      display: flex
+      justify-content: center
+      align-items: center
+
+    .group-tool-placeholder
+      flex: auto
+      margin-left: $big-gap
+      display: flex
+      align-items: center
+
+    .group-tool-grouping
+      flex: none
+      border-radius: $border-radius
+      background: $grey-color
+      padding: 0px $min-gap
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-left: $little-gap
+      min-height: $big-gap
+
+    .group-tool-options
+      @include option-list-style
 
   td, th
     padding: $min-gap $little-gap
@@ -386,7 +576,7 @@ footer
   position: absolute
   z-index: 1070
   display: block
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+  font-family: $global-font
   font-style: normal
   font-weight: normal
   letter-spacing: normal
@@ -431,7 +621,7 @@ footer
   color: #ffffff
   text-align: center
   background-color: #000000
-  border-radius: 4px
+  border-radius: $border-radius-big
 
 .tooltip-arrow
   position: absolute
@@ -495,4 +685,274 @@ footer
   margin-top: -5px
   border-width: 0 5px 5px
   border-bottom-color: #000000
+
+
+div[role="dialog"]
+  overflow: hidden
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  width: 100%
+  height: 100%
+  z-index: 2000
+
+.modal-open
+  overflow: hidden
+
+.modal
+  display: none
+  overflow: hidden
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1050
+  -webkit-overflow-scrolling: touch
+  outline: 0
+
+.modal.fade .modal-dialog
+  -webkit-transform: translate(0, -25%)
+  -ms-transform: translate(0, -25%)
+  -o-transform: translate(0, -25%)
+  transform: translate(0, -25%)
+  -webkit-transition: -webkit-transform 0.3s ease-out
+  -o-transition: -o-transform 0.3s ease-out
+  transition: transform 0.3s ease-out
+
+.modal.in .modal-dialog
+  -webkit-transform: translate(0, 0)
+  -ms-transform: translate(0, 0)
+  -o-transform: translate(0, 0)
+  transform: translate(0, 0)
+
+.modal-open .modal
+  overflow-x: hidden
+  overflow-y: auto
+
+.modal-dialog
+  position: relative
+  width: auto
+  margin: 10px
+
+.modal-container .modal, .modal-container .modal-backdrop
+   position: absolute
+
+.modal-container
+  display: contents
+  position: relative
+  white-space: wrap
+
+  *,
+  *:after,
+  *:before
+  -webkit-box-sizing: border-box
+  box-sizing: border-box
+
+  h4
+    @include h3-text
+
+  button
+    color: inherit
+    font: inherit
+    margin: 0
+    overflow: visible
+
+  button,
+  select
+    text-transform: none
+
+  button,
+  html input[type="button"],
+  input[type="reset"],
+  input[type="submit"]
+    -webkit-appearance: button
+    cursor: pointer
+
+  button[disabled],
+  html input[disabled]
+    cursor: default
+
+  button::-moz-focus-inner,
+  input::-moz-focus-inner
+    border: 0
+    padding: 0
+
+  button.close
+    padding: 0
+    cursor: pointer
+    background: transparent
+    border: 0
+    -webkit-appearance: none
+    float: right
+    font-size: 21px
+    font-weight: 700
+    line-height: 1
+    color: #000
+    text-shadow: 0 1px 0 #fff
+    opacity: .2
+    filter: alpha(opacity=20)
+
+  .btn
+    display: inline-block
+    margin-bottom: 0
+    text-align: center
+    vertical-align: middle
+    -ms-touch-action: manipulation
+    touch-action: manipulation
+    cursor: pointer
+    background-image: none
+    border: 1px solid transparent
+    border-top-color: transparent
+    border-right-color: transparent
+    border-bottom-color: transparent
+    border-left-color: transparent
+    white-space: nowrap
+    padding: 6px 12px
+    font-size: 14px
+    line-height: 1.42857143
+    border-radius: 4px
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+
+
+  .modal-content
+    position: relative
+    background-color: #ffffff
+    border: 1px solid #999999
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    border-radius: 6px
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5)
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5)
+    -webkit-background-clip: padding-box
+            background-clip: padding-box
+    outline: 0
+
+  .modal-backdrop
+    position: fixed
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    z-index: 1040
+    background-color: #000000
+
+  .modal-backdrop.fade
+    opacity: 0
+    filter: alpha(opacity=0)
+
+  .modal-backdrop.in
+    opacity: 0.5
+    filter: alpha(opacity=50)
+
+  .modal-header
+    padding: 15px
+    border-bottom: 1px solid #e5e5e5
+
+  .modal-header .close
+    margin-top: -2px
+
+  .modal-title
+    margin: 0
+    line-height: 1.42857143
+
+  .modal-body
+    position: relative
+    padding: 15px
+    white-space: normal
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-template-rows: auto 1fr
+    grid-auto-flow: column
+
+  .modal-footer
+    padding: 15px
+    text-align: right
+    border-top: 1px solid #e5e5e5
+
+  .modal-footer .btn + .btn
+    margin-left: 5px
+    margin-bottom: 0
+
+  .modal-footer .btn-group .btn + .btn
+    margin-left: -1px
+
+  .modal-footer .btn-block + .btn-block
+    margin-left: 0
+
+  .modal-scrollbar-measure
+    position: absolute
+    top: -9999px
+    width: 50px
+    height: 50px
+    overflow: scroll
+
+  @media (min-width: 768px)
+    .modal-dialog
+      width: 600px
+      margin: 30px auto
+
+    .modal-content
+      -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
+
+    .modal-sm
+      width: 300px
+
+
+  @media (min-width: 992px)
+    .modal-lg
+      width: 900px
+
+
+  .clearfix:before,
+  .clearfix:after,
+  .modal-header:before,
+  .modal-header:after,
+  .modal-footer:before,
+  .modal-footer:after
+    content: " "
+    display: table
+
+  .clearfix:after,
+  .modal-header:after,
+  .modal-footer:after
+    clear: both
+
+  .center-block
+    display: block
+    margin-left: auto
+    margin-right: auto
+
+  .pull-right
+    float: right !important
+
+  .pull-left
+    float: left !important
+
+  .hide
+    display: none !important
+
+  .show
+    display: block !important
+
+  .invisible
+    visibility: hidden
+
+  .text-hide
+    font: 0/0 a
+    color: transparent
+    text-shadow: none
+    background-color: transparent
+    border: 0
+
+  .hidden
+    display: none !important
+
+  .affix
+    position: fixed
 

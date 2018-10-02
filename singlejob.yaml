@@ -18,6 +18,8 @@ spec:
         args: ["-v", "./upload.sh"]
         workingDir: /app
         env:
+        - name: DATA_BUCKET
+          value: "$DATA_BUCKET"
         - name: BUCKET
           value: "$BUCKET"
         volumeMounts:

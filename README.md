@@ -13,6 +13,7 @@ docker build -t cloudefficiency .
 kubectl create secret generic cloudefficiency-config --from-file=./report/config.json --from-file=./frontend/src/config.js
 kubectl create secret generic cloudefficiency-aws-credentials --from-file=~/.aws
 export BUCKET=mybucket
+export DATA_BUCKET=mydatabucket
 export AWS_PROFILE=myprofile
 envsubst < cronjob.yaml | kubectl create -f -
 kubectl create job --from=cronjob/cloudefficiency-cronjob cloudefficiency-job
@@ -27,6 +28,7 @@ docker run -it \
   -v `pwd`'/report/config.json:/app/report/config.json' \
   -v "$HOME/.aws/:/root/.aws/" \
   -e "BUCKET=$BUCKET" \
+  -e "DATA_BUCKET=$DATA_BUCKET" \
   -e "AWS_PROFILE=$AWS_PROFILE" \
   cloudefficiency
 ```
@@ -63,6 +65,19 @@ node ./dist/generate_files.js
 cwd has `./output/*.html`
 `./public/index.css` has styling
 `./public/bundle.js` has js and user/instance data
+
+# Testing
+## Frontend
+Frontend code is tested with Jest and Enzyme.
+To run tests:
+`npm test`
+
+# Debugging
+## Frontend
+either insert `console.log` statements, or you can debug using jest:
+`node --inspect-brk node_modules/.bin/jest --runInBand`
+and open `chrome://inspect` in chrome
+[more details](https://jestjs.io/docs/en/troubleshooting_
 
 # Configuration files
 `logo.svg` in `frontend/public/logo.svg`

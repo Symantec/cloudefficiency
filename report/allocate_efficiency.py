@@ -89,8 +89,16 @@ def format_instances_data(instances, time_period):
             "recommend": get_instance_recommend(instance),
             "cost": get_instance_cost(instance),
             "waste": get_instance_savings(instance),
+            "account": instance['vendorAccountId'],
+            "region": instance['region'],
             "owners": owners,
-            "why_owner": why_owner
+            "tenancy": instance['tenancy'],
+            "why_owner": why_owner,
+            "tags": instance['tags'],
+            "hourly": instance['effectiveHourlyAdjusted'],
+            "idle": instance['idle'],
+            "hoursRunning": instance['hoursRunning'],
+            "cpuMax": instance['cpuMax']
         }
 
     return list(map(report_data, instances))
@@ -153,6 +161,15 @@ def aggregate_cost_and_waste(employee_roots):
         traverse_instance_count(vp)
 
 
+def output_json(json_data, file_name, out_dir):
+
+    full_path = os.path.join(out_dir, file_name)
+    if not os.path.exists(os.path.dirname(full_path)):
+        os.makedirs(os.path.dirname(full_path))
+    with open(full_path, 'x') as f:
+        json.dump(json_data, f)
+
+
 def output_jsonp(json_data, jsonp_var, file_name, out_dir):
 
     full_path = os.path.join(out_dir, file_name)
@@ -169,6 +186,7 @@ def generate_pages(employee_roots, instances, time_period, out_dir):
 
     instances_data = format_instances_data(instances, time_period)
     output_jsonp(instances_data, 'allInstances', 'allInstances.js', out_dir)
+    output_json(instances_data, 'allInstances.json', out_dir + "public/")
 
     employees_data = {}
 
