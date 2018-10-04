@@ -187,7 +187,12 @@ def lambda_handler(event, context):
             return {}
 
         cookie = cookies.SimpleCookie()
-        cookie.load(headers.get('cookie'))
+
+        cookie_header = headers.get('cookie')
+        if not cookie_header:
+            cookie_header = headers.get('Cookie')
+
+        cookie.load(cookie_header)
 
         if key in cookie:
 
@@ -219,7 +224,7 @@ def lambda_handler(event, context):
 
         return {}
 
-    def with_auth():
+    def with_auth(func):
         """
         Authentication decorator.
 
@@ -228,7 +233,7 @@ def lambda_handler(event, context):
         redirect the user/resource owner to the keymaster
         without invoking the given request handler.
         """
-        def wrapped(event, context, callback):
+        def wrapped(event, context):
             logger.debug('Calling with_auth')
             jwt = get_jwt_token(event.get('headers'), oauth_token)
             if oauth_token_key in jwt:
@@ -236,7 +241,7 @@ def lambda_handler(event, context):
                 user = dict(jwt)
                 for key in jwt_keys:
                     user.pop(key, None)
-                return callback(user)
+                return func(event, context, user)
 
             logger.info("User not already auth'd")
 
@@ -264,7 +269,7 @@ def lambda_handler(event, context):
         return wrapped
 
     @with_auth
-    def index(event, context):
+    def index(event, context, user):
         logger.debug('In index')
         s3 = boto3.client('s3')
 
