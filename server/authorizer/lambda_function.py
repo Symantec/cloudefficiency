@@ -1,4 +1,5 @@
 from http import cookies
+import boto3
 import jwt
 import logging
 import os
@@ -33,7 +34,8 @@ def lambda_handler(event, context):
     base_uri = stageVariables.get('base_uri')
 
     # secrets
-    jwt_secrets = stageVariables.get('jwt_secrets').split(',')
+    ssm_client = boto3.client('ssm')
+    jwt_secrets = ssm_client.get_parameter(Name='CloudefficiencyJWTSecrets', WithDecryption=True)["Parameter"]['Value'].split(',')
 
     if len(jwt_secrets) == 0:
         logger.error('Must pass a jwt_secrets stage variable')

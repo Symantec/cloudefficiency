@@ -11,7 +11,7 @@ import uuid
 
 logger = logging.getLogger()
 
-LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
+LOGLEVEL = os.environ.get('LOGLEVEL', 'DEBUG').upper()
 loglevel = logging.getLevelName(LOGLEVEL)
 logger.setLevel(loglevel)
 
@@ -44,9 +44,10 @@ def lambda_handler(event, context):
     BUCKET_NAME = stageVariables.get('bucket_name')
 
     # secrets
-    client_id = stageVariables.get('client_id')
-    client_secret = stageVariables.get('client_secret')
-    jwt_secrets = stageVariables.get('jwt_secrets').split(',')
+    ssm_client = boto3.client('ssm')
+    client_id = ssm_client.get_parameter(Name='CloudefficiencyClientId', WithDecryption=True)["Parameter"]["Value"]
+    client_secret = ssm_client.get_parameter(Name='CloudefficiencyClientSecret', WithDecryption=True)["Parameter"]["Value"]
+    jwt_secrets = ssm_client.get_parameter(Name='CloudefficiencyJWTSecrets', WithDecryption=True)["Parameter"]["Value"].split(',')
 
     if len(client_id) == 0:
         logger.error('Must pass a client_id stage variable')

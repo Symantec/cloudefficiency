@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Bucket for cloudefficiency static html, javascript, and css resources.
+Parameters:
+  StaticBucketName:
+    Type: String
+    Description: The name to use for the static assets bucket.
+  LambdaCodeBucketName:
+    Type: String
+    Description: The name to use for the lambda code bucket.
+  CloudfrontLoggingBucketName:
+    Type: String
+    Description: The name to use for the cloudfront logging bucket.
+Resources:
+  StaticBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref StaticBucketName
+  LambdaCodeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref LambdaCodeBucketName
+  CloudfrontLoggingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref CloudfrontLoggingBucketName
+Outputs:
+  StaticBucket:
+    Description: Static asset bucket for cloudefficiency.
+    Value: !Ref StaticBucket
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-StaticBucket"
+  CloudfrontLoggingBucket:
+    Description: Cloudfront logging bucket for cloudefficiency.
+    Value: !Ref CloudfrontLoggingBucket
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-CloudfrontLoggingBucket"
+  LambdaCodeBucket:
+    Description: Lambda code bucket for cloudefficiency.
+    Value: !Ref LambdaCodeBucket
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-LambdaCodeBucket"

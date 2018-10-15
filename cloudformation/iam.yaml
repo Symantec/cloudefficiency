@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  BucketStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      lambdaCodeBucket
+Resources:
+  APIGatewayRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "apigateway.amazonaws.com"
+              Action: "sts:AssumeRole"
+            - Effect: "Allow"
+              Principal:
+                Service: "lambda.amazonaws.com"
+              Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      RoleName: 'auto-cloudefficiency-apigateway-role'
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+              Service: "lambda.amazonaws.com"
+          Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      RoleName: 'auto-cloudefficiency-lambda-role'
+  CloudefficiencySsmAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+            - "ssm:GetParameter"
+          Resource:
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/CloudefficiencyClientId"
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/CloudefficiencyClientSecret"
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/CloudefficiencyJWTSecrets"
+      PolicyName: 'cloudefficiency-ssm-access'
+      Roles:
+        - !Ref LambdaRole
+        - !Ref APIGatewayRole
+  CloudefficiencyS3AccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+            - "s3:HeadBucket"
+          Resource:
+            - !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:GetObjectAcl"
+          Resource:
+            - !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+                - '/*'
+      PolicyName: 'cloudefficiency-s3-access'
+      Roles:
+        - !Ref LambdaRole
+        - !Ref APIGatewayRole
+Outputs:
+  APIGatewayRole:
+    Description: >
+      API Gateway role to:
+      - write to xray tracing
+      - push to cloudwatch
+      - execute lambda
+      - access vpc in lambda
+      - access the cloudefficiency static assets in s3
+    Value: !Ref APIGatewayRole
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-APIGatewayRole"
+  LambdaRole:
+    Description: >
+      Lambda role to:
+      - write to xray tracing
+      - execute lambda
+      - access vpc in lambda
+      - access the cloudefficiency static assets in s3
+    Value: !Ref LambdaRole
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-LambdaRole"

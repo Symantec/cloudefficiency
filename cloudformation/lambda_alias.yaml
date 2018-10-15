@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  LambdaVersion:
+    Type: 'String'
+    Description: >
+      The Version of the lambda that the alias
+      should point to.
+Resources:
+  ServerLambdaAlias:
+    Type: AWS::Lambda::Alias
+    Properties:
+      Description: >
+        Alias that points to the lambda version that
+        is currently serving in the API Gateway.
+      FunctionName: cloudefficiency-lambda
+      FunctionVersion: !Ref LambdaVersion
+      Name: prod
+Outputs:
+  LambdaAlias:
+    Description: >
+      Cloudefficiency lambda alias for production serving.
+      - authenticates with keymaster
+      - serves s3 static assets
+    Value: !Ref ServerLambdaAlias
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-ServerLambdaAlias"

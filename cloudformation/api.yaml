@@ -1,0 +1,220 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  BucketStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      StaticBucket of html, css, & javascript
+  IAMStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      APIGatewayRole
+      LambdaRole
+  LambdaStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      ServerLambda
+Resources:
+  API:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: cloudefficiency
+      EndpointConfiguration:
+        Types: ['REGIONAL']
+  # / : GET
+  RootResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'GET'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:prod/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda:
+              Fn::ImportValue:
+                !Sub "${LambdaStackName}-ServerLambda"
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'Index'
+      RequestParameters:
+        method.request.header.Cookie: true
+      ResourceId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      RestApiId: !Ref API
+
+  # /callback
+  CallbackResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      PathPart: "callback"
+  CallbackResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'GET'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:prod/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda:
+              Fn::ImportValue:
+                !Sub "${LambdaStackName}-ServerLambda"
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.querystring.code: false
+      ResourceId: !Ref CallbackResource
+      RestApiId: !Ref API
+
+  # /{date}
+  # This resource has no methods.
+  DateResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: "API"
+      ParentId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      PathPart: "{date}"
+
+  # /{date}/allocation/
+  AllocationResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref DateResource
+      PathPart: "allocation"
+
+  # /{date}/allocation/{proxy+}
+  AllocationProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref AllocationResource
+      PathPart: "{proxy+}"
+  AllocationProxyResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'ANY'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:prod/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda:
+              Fn::ImportValue:
+                !Sub "${LambdaStackName}-ServerLambda"
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.header.Cookie: true
+        method.request.path.date: true
+        method.request.path.proxy: true
+      ResourceId: !Ref AllocationProxyResource
+      RestApiId: !Ref API
+
+  # /{date}/public/
+  PublicResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref DateResource
+      PathPart: "public"
+
+  # /{date}/public/{proxy+}
+  PublicProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref PublicResource
+      PathPart: "{proxy+}"
+  PublicProxyResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      # TODO include the authorizer
+      # AuthorizationType: 'CUSTOM'
+      # AuthorizerId: String
+      HttpMethod: 'GET'
+      Integration:
+        Credentials: !Sub
+          - "arn:aws:iam::${Account}:role/${Role}"
+          - Account: !Ref AWS::AccountId
+            Role:
+              Fn::ImportValue:
+                !Sub "${IAMStackName}-APIGatewayRole"
+        IntegrationHttpMethod: 'GET'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS'
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:s3:path/{bucket}/{date}/public/{proxy}"
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+            SelectionPattern: ""
+            StatusCode: "200"
+        RequestParameters:
+          integration.request.path.bucket:
+            Fn::Join:
+              - ''
+              - - "'"
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+                - "'"
+          integration.request.path.date: 'method.request.path.date'
+          integration.request.path.proxy: 'method.request.path.proxy'
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - ResponseParameters:
+             method.response.header.Content-Type: true
+          StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.header.Cookie: true
+        method.request.path.date: true
+        method.request.path.proxy: true
+      ResourceId: !Ref PublicProxyResource
+      RestApiId: !Ref API
+Outputs:
+  RestAPI:
+    Description: Rest API
+    Value: !Ref API
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-RestApi"
