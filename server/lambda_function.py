@@ -20,7 +20,7 @@ jwt_cookie_key = 'jwt_token'
 
 
 def lambda_handler(event, context):
-    logger.info('Starting lambda handler')
+    logger.info('Starting lambda handler.')
     logger.info('loglevel: %s', LOGLEVEL)
     """
     input:

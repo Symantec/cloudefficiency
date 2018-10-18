@@ -20,6 +20,8 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref LambdaCodeBucketName
+      VersioningConfiguration:
+        Status: Enabled
   CloudfrontLoggingBucket:
     Type: AWS::S3::Bucket
     Properties:

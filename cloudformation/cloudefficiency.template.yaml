@@ -1,0 +1,561 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  #
+  # In addition to the following parameters,
+  # cloudefficiency needs Systems Manager Secrets:
+  # - CloudefficiencyClientId
+  # - CloudefficiencyClientSecret
+  # - CloudefficiencyJWTSecrets
+  # The lambda itself will pull these in python code
+  # so they are not otherwise enumerated here.
+  #
+  EnvType:
+    Description: Environment type.
+    Default: dev
+    Type: String
+    AllowedValues:
+      - prod
+      - dev
+    ConstraintDescription: must specify prod or test.
+  CommitSHA:
+    Type: 'String'
+  AuthorizerCodeSHA256:
+    Type: 'String'
+  ServerCodeSHA256:
+    Type: 'String'
+  AuthorizerLambdaS3ObjectVersion:
+    Type: 'String'
+  ServerLambdaS3ObjectVersion:
+    Type: 'String'
+  IAMStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+        APIGatewayRole"
+        LambdaRole"
+  BaseURI:
+    Type: 'String'
+    Description: >
+      The base uri to serve the cloudefficiency dashboard.
+  AuthorizationEndpoint:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CloudefficiencyAuthorizationEndpoint
+  TokenEndpoint:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+  BucketStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      LambdaCodeBucket
+  BaseURI:
+    Type: 'String'
+    Description: >
+      The base uri to serve the cloudefficiency dashboard.
+  AuthorizationEndpoint:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CloudefficiencyAuthorizationEndpoint
+  TokenEndpoint:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CloudefficiencyTokenEndpoint
+  UserinfoEndpoint:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CloudefficiencyUserinfoEndpoint
+  NetworkStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+        - PrivateSubnet01
+        - PrivateSubnet02
+        - PrivateSubnet03
+        - PrivateSubnet04
+        - SecurityGroupDefault
+        - SecurityGroupCorpAccess
+  ACMCertificateArn:
+    Type: 'String'
+    Description: >
+      The ACM certificate ARN to use in the distribution.
+  CNAME:
+    Type: 'String'
+    Description: >
+      The base uri to serve the cloudefficiency dashboard.
+Conditions:
+  CreateProdResources: !Equals [ !Ref EnvType, prod ]
+  CreateDevResources: !Equals [ !Ref EnvType, dev ]
+Resources:
+  ServerLambda:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::ImportValue:
+            !Sub "${BucketStackName}-LambdaCodeBucket"
+        S3Key: server.zip
+        S3ObjectVersion: !Ref ServerLambdaS3ObjectVersion
+      Description: 'cloudefficiency lambda handler'
+      FunctionName: 'cloudefficiency-lambda'
+      Handler: 'lambda_function.lambda_handler'
+      MemorySize: 1024
+      Role: !Sub
+        - "arn:aws:iam::${Account}:role/${Role}"
+        - Account: !Ref AWS::AccountId
+          Role:
+            Fn::ImportValue:
+              !Sub "${IAMStackName}-LambdaRole"
+      Runtime: 'python3.6'
+      Timeout: 300
+      TracingConfig:
+        Mode: 'Active'
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-SecurityGroupDefault"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-SecurityGroupCorpAccess"
+        SubnetIds:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet01"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet02"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet03"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet04"
+  AuthorizerLambda:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::ImportValue:
+            !Sub "${BucketStackName}-LambdaCodeBucket"
+        S3Key: authorizer.zip
+        S3ObjectVersion: !Ref AuthorizerLambdaS3ObjectVersion
+      Description: 'cloudefficiency authorizer'
+      FunctionName: 'cloudefficiency-authorizer'
+      Handler: 'lambda_function.lambda_handler'
+      MemorySize: 1024
+      Role: !Sub
+        - "arn:aws:iam::${Account}:role/${Role}"
+        - Account: !Ref AWS::AccountId
+          Role:
+            Fn::ImportValue:
+              !Sub "${IAMStackName}-APIGatewayRole"
+      Runtime: 'python3.6'
+      Timeout: 120
+      TracingConfig:
+        Mode: 'Active'
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-SecurityGroupDefault"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-SecurityGroupCorpAccess"
+        SubnetIds:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet01"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet02"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet03"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet04"
+  DevAPIDomain:
+    Type: AWS::ApiGateway::DomainName
+    Condition: CreateDevResources
+    Properties:
+      DomainName: !Ref CNAME
+      EndpointConfiguration:
+        Types: ['REGIONAL']
+      RegionalCertificateArn: !Ref ACMCertificateArn
+  DevAPIBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Condition: CreateDevResources
+    Properties:
+      DomainName: !Ref DevAPIDomain
+      RestApiId: !Ref API
+      Stage: !Ref APIStage
+  ProdDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: CreateProdResources
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref CNAME
+        DefaultCacheBehavior:
+          # No Caching for now.
+          DefaultTTL: 0
+          MaxTTL: 0
+          MinTTL: 0
+          ForwardedValues:
+            Cookies:
+              Forward: 'all'
+            QueryString: true
+          TargetOriginId: !Sub "${AWS::StackName}-cloudfront-origin"
+          ViewerProtocolPolicy : 'redirect-to-https'
+        Enabled: true
+        HttpVersion: 'http2'
+        IPV6Enabled: true
+        Logging:
+          Bucket:
+            Fn::Join:
+              - ''
+              - - Fn::ImportValue:
+                    !Sub "${BucketStackName}-CloudfrontLoggingBucket"
+                - '.s3.amazonaws.com'
+          IncludeCookies: true
+        Origins:
+          - CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginKeepaliveTimeout: 30
+              OriginProtocolPolicy: 'https-only'
+              OriginReadTimeout: 60
+            DomainName:
+              Fn::Sub:
+                - '${APIId}.execute-api.${Region}.amazonaws.com'
+                - APIId: !Ref API
+                  Region: !Ref AWS::Region
+            Id: !Sub "${AWS::StackName}-cloudfront-origin"
+            # This value is hard coded without an import
+            # to allow the slow cloudformation distribution
+            # to be deployed before code is deployed.
+            OriginPath: '/serving'
+
+        PriceClass: 'PriceClass_100'
+        ViewerCertificate:
+          AcmCertificateArn: !Ref ACMCertificateArn
+          MinimumProtocolVersion: "TLSv1.1_2016"
+          SslSupportMethod: "sni-only"
+  APILogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "${AWS::StackName}-LogGroup"
+      RetentionInDays: 7
+  APIDeployement:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - PublicProxyResourceGet
+      - AllocationProxyResourceGet
+      - CallbackResourceGet
+      - RootResourceGet
+    Properties:
+      RestApiId: !Ref API
+      Description: "Deployment"
+  APIStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      AccessLogSetting:
+        DestinationArn: !GetAtt APILogGroup.Arn
+      CacheClusterEnabled: false
+      DeploymentId: !Ref APIDeployement
+      Description: 'Deployment'
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: '*'
+          MetricsEnabled: true
+          LoggingLevel: "INFO"
+          DataTraceEnabled: true
+          ThrottlingBurstLimit: 5000
+          ThrottlingRateLimit: 10000
+          CachingEnabled: false
+      RestApiId: !Ref API
+      StageName: 'serving'
+      Variables:
+        authorization_endpoint: !Ref AuthorizationEndpoint
+        base_uri: !Ref BaseURI
+        bucket_name:
+          Fn::ImportValue:
+            !Sub "${BucketStackName}-StaticBucket"
+        default_object: "redirect_index.html"
+        redirect_uri: !Join ['', [!Ref BaseURI, "/callback"]]
+        token_endpoint: !Ref TokenEndpoint
+        userinfo_endpoint: !Ref UserinfoEndpoint
+  Authorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      AuthorizerResultTtlInSeconds: 0
+      AuthorizerUri: !Sub
+        - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:serving/invocations'
+        - Region: !Ref AWS::Region
+          Account: !Ref AWS::AccountId
+          Lambda: !Ref AuthorizerLambda
+      IdentitySource: "method.request.header.Cookie"
+      Name: "cloudefficiency"
+      RestApiId: !Ref API
+      Type: "REQUEST"
+  API:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: cloudefficiency
+      EndpointConfiguration:
+        Types: ['REGIONAL']
+  # / : GET
+  RootResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'GET'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:serving/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda: !Ref ServerLambda
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'Index'
+      RequestParameters:
+        method.request.header.Cookie: true
+      ResourceId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      RestApiId: !Ref API
+
+  # /callback
+  CallbackResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      PathPart: "callback"
+  CallbackResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'GET'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:serving/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda: !Ref ServerLambda
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.querystring.code: false
+      ResourceId: !Ref CallbackResource
+      RestApiId: !Ref API
+
+  # /{date}
+  # This resource has no methods.
+  DateResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: "API"
+      ParentId:
+        Fn::GetAtt:
+          - "API"
+          - "RootResourceId"
+      PathPart: "{date}"
+
+  # /{date}/allocation/
+  AllocationResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref DateResource
+      PathPart: "allocation"
+
+  # /{date}/allocation/{proxy+}
+  AllocationProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref AllocationResource
+      PathPart: "{proxy+}"
+  AllocationProxyResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'ANY'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${Region}:${Account}:function:${Lambda}:serving/invocations'
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            Lambda: !Ref ServerLambda
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.header.Cookie: true
+        method.request.path.date: true
+        method.request.path.proxy: true
+      ResourceId: !Ref AllocationProxyResource
+      RestApiId: !Ref API
+
+  # /{date}/public/
+  PublicResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref DateResource
+      PathPart: "public"
+
+  # /{date}/public/{proxy+}
+  PublicProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref "API"
+      ParentId: !Ref PublicResource
+      PathPart: "{proxy+}"
+  PublicProxyResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: 'NONE'
+      AuthorizationType: 'CUSTOM'
+      AuthorizerId: !Ref Authorizer
+      HttpMethod: 'GET'
+      Integration:
+        Credentials: !Sub
+          - "arn:aws:iam::${Account}:role/${Role}"
+          - Account: !Ref AWS::AccountId
+            Role:
+              Fn::ImportValue:
+                !Sub "${IAMStackName}-APIGatewayRole"
+        IntegrationHttpMethod: 'GET'
+        PassthroughBehavior: 'WHEN_NO_MATCH'
+        Type: 'AWS'
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:s3:path/{bucket}/{date}/public/{proxy}"
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+            SelectionPattern: ""
+            StatusCode: "200"
+        RequestParameters:
+          integration.request.path.bucket:
+            Fn::Join:
+              - ''
+              - - "'"
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+                - "'"
+          integration.request.path.date: 'method.request.path.date'
+          integration.request.path.proxy: 'method.request.path.proxy'
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Location: true
+          StatusCode: '302'
+        - ResponseParameters:
+             method.response.header.Content-Type: true
+          StatusCode: '200'
+      OperationName: 'OpenIDCallback'
+      RequestParameters:
+        method.request.header.Cookie: true
+        method.request.path.date: true
+        method.request.path.proxy: true
+      ResourceId: !Ref PublicProxyResource
+      RestApiId: !Ref API
+  AuthorizerLambdaVersion<AUTHORIZER_LAMBDA_VERSION>:
+    Type: AWS::Lambda::Version
+    DeletionPolicy: Retain
+    Properties:
+      CodeSha256: !Ref AuthorizerCodeSHA256
+      Description: !Ref AuthorizerCodeSHA256
+      FunctionName: !Ref AuthorizerLambda
+  AuthorizerLambdaAlias:
+    Type: AWS::Lambda::Alias
+    Properties:
+      Description: >
+        Alias that points to the lambda version that
+        is currently live.
+      FunctionName: !Ref AuthorizerLambda
+      FunctionVersion: !GetAtt AuthorizerLambdaVersion<AUTHORIZER_LAMBDA_VERSION>.Version
+      Name: serving
+  ServerLambdaVersion<SERVER_LAMBDA_VERSION>:
+    Type: AWS::Lambda::Version
+    DeletionPolicy: Retain
+    Properties:
+      CodeSha256: !Ref ServerCodeSHA256
+      Description: !Ref ServerCodeSHA256
+      FunctionName: !Ref ServerLambda
+  ServerLambdaAlias:
+    Type: AWS::Lambda::Alias
+    Properties:
+      Description: >
+        Alias that points to the lambda version that
+        is currently live.
+      FunctionName: !Ref ServerLambda
+      FunctionVersion: !GetAtt ServerLambdaVersion<SERVER_LAMBDA_VERSION>.Version
+      Name: serving
+
+  ##############################################################################
+  # Authorizer permission
+  ##############################################################################
+  AuthorizerInvoke:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !Ref AuthorizerLambdaAlias
+      Principal: "apigateway.amazonaws.com"
+      SourceArn:
+        Fn::Sub:
+          - "arn:aws:execute-api:${Region}:${Account}:${APIID}/authorizers/${AUTHID}"
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            APIID: !Ref API
+            AUTHID: !Ref Authorizer
+
+
+  ##############################################################################
+  # Serving permissions
+  ##############################################################################
+  RootGet:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !Ref ServerLambdaAlias
+      Principal: "apigateway.amazonaws.com"
+      SourceArn:
+        Fn::Sub:
+          - "arn:aws:execute-api:${Region}:${Account}:${APIID}/*/GET/"
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            APIID: !Ref API
+  CallbackGet:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !Ref ServerLambdaAlias
+      Principal: "apigateway.amazonaws.com"
+      SourceArn:
+        Fn::Sub:
+          - "arn:aws:execute-api:${Region}:${Account}:${APIID}/*/GET/callback"
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            APIID: !Ref API
+  AllocationGet:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !Ref ServerLambdaAlias
+      Principal: "apigateway.amazonaws.com"
+      SourceArn:
+        Fn::Sub:
+          - "arn:aws:execute-api:${Region}:${Account}:${APIID}/*/*/*/allocation/*"
+          - Region: !Ref AWS::Region
+            Account: !Ref AWS::AccountId
+            APIID: !Ref API
