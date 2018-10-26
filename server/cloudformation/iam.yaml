@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM resources for CPE keymaster serving.
+Parameters:
+  SSMParamPrefix:
+    Type: 'String'
+    Description: >
+      The prefix to use to lookup SSM params.
+  SSMParamKeyARN:
+    Type: 'String'
+    Description: >
+      The prefix to use to lookup SSM params.
+  BucketStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      StaticBucket
+Resources:
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: !Sub "auto-${AWS::StackName}-task-execution-role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "ecs-tasks.amazonaws.com"
+              Action: "sts:AssumeRole"
+      RoleName: !Sub "auto-${AWS::StackName}-task-role"
+  ParameterAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+            - "kms:Decrypt"
+            - "ssm:GetParameter"
+          Resource:
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/prod/${SSMParamPrefix}/client_id"
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/prod/${SSMParamPrefix}/client_secret"
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/prod/${SSMParamPrefix}/jwt_secrets"
+            - !Ref SSMParamKeyARN
+      PolicyName: !Sub "${AWS::StackName}-param-access"
+      Roles:
+        - !Ref TaskRole
+  S3AccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+            - "s3:HeadBucket"
+          Resource:
+            - !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:GetObjectAcl"
+          Resource:
+            - !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - Fn::ImportValue:
+                    !Sub "${BucketStackName}-StaticBucket"
+                - '/*'
+      PolicyName: !Sub "${AWS::StackName}-s3-access"
+      Roles:
+        - !Ref TaskRole
+Outputs:
+  TaskRole:
+    Description: >
+      ECS Task role to:
+      - access vpc in lambda
+      - access the static assets in s3
+      - access secret parameters
+      - decrypt the secret parameters
+    Value: !Ref TaskRole
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-TaskRole"
+  TaskExecutionRole:
+    Value: !Ref TaskExecutionRole
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-TaskExecutionRole"

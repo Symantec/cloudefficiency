@@ -1,0 +1,229 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Resources to service s3 data through ECS.
+Parameters:
+  AppName:
+    Type: 'String'
+    Description: >
+      The App name, used:
+        - in tagging
+        - as a naming prefix
+        - in parameters
+  ACMCertificateArn:
+    Type: 'String'
+    Description: >
+      The ACM certificate ARN to use in the distribution.
+  BaseURI:
+    Type: 'String'
+    Description: >
+      Base uri to serve
+  KeymasterURI:
+    Type: 'String'
+    Description: >
+      Base uri of the keymaster server for authentication.
+  ImageURI:
+    Type: 'String'
+  BucketStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+      StaticBucket
+  IAMStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+        - TaskRole
+        - TaskExecutionRole
+  NetworkStackName:
+    Type: 'String'
+    Description: >
+      The name of the stack which includes
+        - VPC
+        - PublicSubnet01
+        - PublicSubnet02
+        - PublicSubnet03
+        - PublicSubnet04
+        - SecurityGroupCorpAccess
+Resources:
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "${AWS::StackName}"
+  SecurityGroup:
+    # having no egress rules retains default rule that allows any outgoing traffic.
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate containers
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${NetworkStackName}-VPC"
+  SecurityGroupIngressFromSelf:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from other containers in the same security group
+      GroupId: !Ref SecurityGroup
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref SecurityGroup
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: ListenerServing
+    Properties:
+      Cluster: !Ref Cluster
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
+      HealthCheckGracePeriodSeconds: 20
+      LaunchType: "FARGATE"
+      LoadBalancers:
+        - ContainerName: !Sub "${AWS::StackName}"
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - Fn::ImportValue:
+                !Sub "${NetworkStackName}-PublicSubnet01"
+            - Fn::ImportValue:
+                !Sub "${NetworkStackName}-PublicSubnet02"
+            - Fn::ImportValue:
+                !Sub "${NetworkStackName}-PublicSubnet03"
+            - Fn::ImportValue:
+                !Sub "${NetworkStackName}-PublicSubnet04"
+          SecurityGroups:
+            - !Ref SecurityGroup
+          AssignPublicIp: "ENABLED"
+      ServiceName: !Sub "${AWS::StackName}"
+      TaskDefinition: !Ref Task
+  Task:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - app.py
+          EntryPoint:
+            - python3
+          Environment:
+            - Name: "app_name"
+              Value: !Ref AppName
+            - Name: "default_object"
+              Value: "redirect_index.html"
+            - Name: "base_uri"
+              Value: !Ref BaseURI
+            - Name: "bucket_name"
+              Value:
+                Fn::ImportValue:
+                  !Sub "${BucketStackName}-StaticBucket"
+            - Name: "redirect_uri"
+              Value: !Join ['/', [ !Ref BaseURI, 'callback' ]]
+            - Name: "authorization_endpoint"
+              Value: !Join ['/', [ !Ref KeymasterURI, 'idp/oauth2/authorize' ]]
+            - Name: "token_endpoint"
+              Value: !Join ['/', [ !Ref KeymasterURI, 'idp/oauth2/token' ]]
+            - Name: "userinfo_endpoint"
+              Value: !Join ['/', [ !Ref KeymasterURI, 'idp/oauth2/userinfo' ]]
+          Image: !Ref ImageURI
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Sub "/ecs/${AWS::StackName}"
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: "ecs"
+          MemoryReservation: 400
+          Name: !Sub "${AWS::StackName}"
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 80
+          ReadonlyRootFilesystem: True
+          WorkingDirectory: /app
+      Cpu: 1024
+      Memory: 2048
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn:
+        Fn::ImportValue:
+          !Sub "${IAMStackName}-TaskExecutionRole"
+      TaskRoleArn:
+        Fn::ImportValue:
+          !Sub "${IAMStackName}-TaskRole"
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+        Name: !Sub "${AWS::StackName}"
+        Scheme: 'internet-facing'
+        SecurityGroups:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-SecurityGroupCorpAccess"
+          - !Ref SecurityGroup
+        Subnets:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PublicSubnet01"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PublicSubnet02"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PublicSubnet03"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PublicSubnet04"
+        Type: 'application'
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${NetworkStackName}-VPC"
+      Port: 80
+      Protocol: HTTP
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      Matcher:
+        HttpCode: 302
+      TargetType: ip
+      Name: !Sub "${AWS::StackName}"
+
+#  ListenerHttpToHttps:
+#    Type: AWS::ElasticLoadBalancingV2::Listener
+#    Properties:
+#      DefaultActions:
+#        - Type: redirect
+#      LoadBalancerArn: !Ref LoadBalancer
+#      Port: 80
+#      Protocol: "HTTP"
+  ListenerServing:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn: LoadBalancer
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref ACMCertificateArn
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      SslPolicy: "ELBSecurityPolicy-2016-08"
+#  ListenerRuleRedirectHttpHttps:
+#    Properties:
+#        Actions:
+#              Type: redirect
+#        ListenerArn: !Ref ListenerHttpToHttps
+#        Priority: default
+#        IsDefault: true
+#  ListenerRuleServing:
+#    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+#    Properties:
+#        Actions:
+#          - TargetGroupArn: !Ref TargetGroup
+#            Type: 'forward'
+#        Conditions:
+#          - Field: path-pattern
+#            Values:
+#              - '*'
+#        ListenerArn: !Ref ListenerServing
+#        Priority: 1
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/ecs/${AWS::StackName}"
