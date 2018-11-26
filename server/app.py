@@ -337,7 +337,6 @@ def callback():
 
 
 if __name__ == "__main__":
-    app.secret_key = os.urandom(24)
 
     debug = os.environ.get('DEBUG', False)
     if os.environ.get('SERVE_HTTPS'):
