@@ -3,10 +3,11 @@
 ![Screenshot](https://github.com/Symantec/cloudefficiency/raw/master/cloudefficiency.png)
 
 # To run the report
-1. install minikube
+1. Install minikube
 https://kubernetes.io/docs/tasks/tools/install-minikube/
 
 2. To run:
+#### Option 1
 ```
 eval $(minikube docker-env)
 docker build -t cloudefficiency .
@@ -18,9 +19,8 @@ export AWS_PROFILE=myprofile
 envsubst < cronjob.yaml | kubectl create -f -
 kubectl create job --from=cronjob/cloudefficiency-cronjob cloudefficiency-job
 ```
-
-or
-
+#### Option 2
+                  
 ```
 docker build . -t cloudefficiency
 docker run -it \
@@ -34,32 +34,32 @@ docker run -it \
 ```
 
 # EC2 c-type instance cost/waste interactive reports by team and manager.
-Three stages to produce EC2 c-type instance cost/waste interactive reports.
+There are 3 stages to produce EC2 c-type instance cost/waste interactive reports.
 ldap data + instance data -> user hierarchy and instance data -> static html/js isomorphic React pages.
 
-## First two stages in python
+## First 2 stages in python
 `python3 -m report.allocate_efficiency`
 
-### preparing raw data
-1. gets ldap data for user hierarchy, and dl lists.
-2. gets rightsizing recommendations for instances from cloudability.
+### Preparing raw data
+1. Gets ldap data for user hierarchy, and dl lists.
+2. Gets rightsizing recommendations for instances from cloudability.
 
 caches data to:
 - ldap_entries.pickle
 - dl_owners.pickle
 - rightsizing_cache.json
 
-### attributing ownership
-3. assigns cost and waste to each individual
-4. aggregate costs and wastes up reporting chain
+### Attributing ownership
+3. Assigns cost and waste to each individual
+4. Aggregate costs and wastes up reporting chain
 
-outputs:
+#### Outputs:
 - allInstances.js jsonp file
 - allUsers.js jsonp file
 
 `mv all*.js to frontend/src/`
 
-# generating reports
+# Generating reports
 node ./dist/generate_files.js
 
 cwd has `./output/*.html`
@@ -73,11 +73,12 @@ To run tests:
 `npm test`
 
 # Debugging
+
 ## Frontend
-either insert `console.log` statements, or you can debug using jest:
+Either insert `console.log` statements, or you can debug using jest:
 `node --inspect-brk node_modules/.bin/jest --runInBand`
 and open `chrome://inspect` in chrome
-[more details](https://jestjs.io/docs/en/troubleshooting_
+[more details] (https://jestjs.io/docs/en/troubleshooting_
 
 # Configuration files
 `logo.svg` in `frontend/public/logo.svg`
@@ -133,7 +134,7 @@ Analytics.updateEndpoint({
     referrer: ...,
 })
 
-click CPE logo
+Click CPE logo
 {
     name: 'click',
     attributes: {
@@ -141,7 +142,7 @@ click CPE logo
     },
 });
 
-click issues
+Click issues
 {
     name: 'click',
     attributes: {
@@ -149,7 +150,7 @@ click issues
     },
 });
 
-click help
+Click help
 {
     name: 'click',
     attributes: {
@@ -157,7 +158,7 @@ click help
     },
 });
 
-click teammember
+Click teammember
 {
     name: 'click',
     attributes: {
@@ -166,7 +167,7 @@ click teammember
     },
 });
 
-click manager
+Click manager
 {
     name: 'click',
     attributes: {
@@ -175,7 +176,7 @@ click manager
     },
 });
 
-click owner
+Click owner
 {
     name: 'click',
     attributes: {
@@ -185,7 +186,7 @@ click owner
     },
 });
 
-click ownerVp
+Click ownerVp
 {
     name: 'click',
     attributes: {
